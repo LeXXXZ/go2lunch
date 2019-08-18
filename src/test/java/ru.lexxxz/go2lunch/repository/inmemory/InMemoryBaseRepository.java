@@ -1,4 +1,4 @@
-package ru.lexxxz.go2lunch.repository;
+package ru.lexxxz.go2lunch.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.lexxxz.go2lunch.model.AbstractBaseEntity;

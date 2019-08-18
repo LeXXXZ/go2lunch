@@ -1,8 +1,9 @@
-package ru.lexxxz.go2lunch.repository;
+package ru.lexxxz.go2lunch.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.lexxxz.go2lunch.UserTestData;
 import ru.lexxxz.go2lunch.model.User;
+import ru.lexxxz.go2lunch.repository.UserRepository;
 
 import java.util.Comparator;
 import java.util.List;
