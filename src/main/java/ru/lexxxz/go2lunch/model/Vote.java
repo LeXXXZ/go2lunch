@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "votes")
-public class Vote {
+public class Vote extends AbstractBaseEntity{
 
-    @Id
     @Column(name = "date_time", nullable = false)
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
