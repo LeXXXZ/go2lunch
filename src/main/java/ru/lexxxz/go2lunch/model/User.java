@@ -2,6 +2,7 @@ package ru.lexxxz.go2lunch.model;
 
 import org.hibernate.annotations.BatchSize;
 import org.springframework.util.CollectionUtils;
+import ru.lexxxz.go2lunch.HasEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
-public class User extends AbstractNamedEntity {
+public class User extends AbstractNamedEntity implements HasEmail {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -62,6 +63,7 @@ public class User extends AbstractNamedEntity {
         setRoles(roles);
     }
 
+    @Override
     public String getEmail() {
         return email;
     }

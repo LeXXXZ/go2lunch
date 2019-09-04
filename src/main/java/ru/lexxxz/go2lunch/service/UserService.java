@@ -2,17 +2,21 @@ package ru.lexxxz.go2lunch.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.repository.UserRepository;
-import ru.lexxxz.go2lunch.util.NotFoundException;
+import ru.lexxxz.go2lunch.to.UserTo;
+import ru.lexxxz.go2lunch.util.UserUtil;
+import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
 import java.util.List;
 
 import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFound;
 import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
+@Service("userService")
+//@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService {
 
     private final UserRepository repository;
@@ -47,6 +51,12 @@ public class UserService {
     public void update(User user) throws NotFoundException {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.getId());
+    }
+
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.id());
+        checkNotFoundWithId(repository.save(UserUtil.updateFromTo(user, userTo)), user.getId());
     }
 
     public void enable(int id, boolean enabled) {
