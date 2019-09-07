@@ -4,14 +4,16 @@
     <!-- To enable JMX Management -->
     <jmxConfigurator/>
 
+<!--
     <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>log/lunch2go.log</file>
+        <file>./log/lunch2go.log</file>
 
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%date %-5level %logger{50}.%M:%L - %msg%n</pattern>
         </encoder>
     </appender>
+-->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -20,10 +22,10 @@
         </encoder>
     </appender>
 
-    <logger name="ru.lexxxz.go2lunch" level="debug">   <appender-ref ref="console"/> </logger>
-    <logger name="org.springframework.data.jpa" level="debug"> <appender-ref ref="console"/></logger>
+    <logger name="ru.lexxxz.go2lunch" level="debug" additivity="false">   <appender-ref ref="console"/> </logger>
+    <logger name="org.springframework.data.jpa" level="debug" additivity="false"> <appender-ref ref="console"/></logger>
 
     <root level="error">
-        <appender-ref ref="file"/>
+        <appender-ref ref="console"/>
     </root>
 </configuration>
