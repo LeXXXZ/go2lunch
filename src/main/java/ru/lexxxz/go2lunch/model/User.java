@@ -11,7 +11,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,10 +38,6 @@ public class User extends AbstractNamedEntity implements HasEmail {
     @BatchSize(size = 200)
     @NotEmpty
     private Set<Role> roles;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @OrderBy("dateTime DESC")
-    protected List<Vote> votes;
 
     public User() {
     }
@@ -94,10 +89,6 @@ public class User extends AbstractNamedEntity implements HasEmail {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
-    }
-
-    public List<Vote> getVotes() {
-        return votes;
     }
 
     @Override
