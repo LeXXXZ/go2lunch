@@ -9,7 +9,7 @@ import ru.lexxxz.go2lunch.repository.UserRepository;
 import java.util.List;
 
 @Repository
-public class DataJpaUserRepository
+public class UserRepositoryImpl
         implements UserRepository
 {
     private static final Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");

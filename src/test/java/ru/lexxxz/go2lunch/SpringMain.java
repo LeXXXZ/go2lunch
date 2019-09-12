@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.lexxxz.go2lunch.model.Role;
 import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.repository.UserRepository;
-import ru.lexxxz.go2lunch.repository.jpa.DataJpaUserRepository;
+import ru.lexxxz.go2lunch.repository.jpa.UserRepositoryImpl;
 import ru.lexxxz.go2lunch.service.UserService;
 
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class SpringMain {
     public static void main(String[] args) {
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml")) {
 //            System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
-            UserRepository userRepository = appCtx.getBean(DataJpaUserRepository.class);
+            UserRepository userRepository = appCtx.getBean(UserRepositoryImpl.class);
             List<User> users = userRepository.getAll();
             System.out.println("---------------------------------");
             for (User u : users) {

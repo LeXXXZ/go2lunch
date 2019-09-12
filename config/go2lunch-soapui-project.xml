@@ -5,9 +5,9 @@
         <con:settings/>
         
         <con:definitionCache type="TEXT" rootPart=""/><con:endpoints>
-            <con:endpoint>http://localhost:8080</con:endpoint>
-        </con:endpoints>
-        <con:resource name="users" path="/go2lunch/rest/admin/users" id="6da03be8-b9dc-43d8-a333-3253fa8d4dad">
+            
+        <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint></con:endpoints>
+        <con:resource name="users" path="/admin/users" id="6da03be8-b9dc-43d8-a333-3253fa8d4dad">
             <con:settings/>
             <con:parameters/>
             <con:method name="" method="GET" id="d020d56b-e008-4f4a-8234-35767b093863">
@@ -35,7 +35,7 @@
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request/>
                     <con:originalUri>http://localhost/topjava/rest/admin/users</con:originalUri>
                     <con:credentials>
@@ -79,7 +79,7 @@
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request>{"name": "New2",
  "email": "new2@yandex.ru",
  "password": "passwordNew",
@@ -98,7 +98,7 @@
                 </con:request>
             </con:method>
         </con:resource>
-        <con:resource name="user" path="/go2lunch/rest/admin/users/100000" id="7f8ab4ae-b6a8-4aa8-a502-9dbebb27ad8b">
+        <con:resource name="user" path="/admin/users/100000" id="7f8ab4ae-b6a8-4aa8-a502-9dbebb27ad8b">
             <con:settings/>
             <con:parameters/>
             <con:method name="" method="GET" id="7a2525a5-8d97-4c33-97ab-dc071c529154">
@@ -126,7 +126,7 @@
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request/>
                     <con:originalUri>http://localhost/topjava/rest/admin/users/100000</con:originalUri>
                     <con:credentials>
@@ -137,7 +137,7 @@
                     <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
                     <con:jmsPropertyConfig/>
                     <con:parameters/>
-                </con:request>
+                <con:parameterOrder/></con:request>
             </con:method>
             <con:method name="" method="PUT" id="6ba10636-f473-4505-8c66-673b087953df">
                 <con:settings/>
@@ -188,15 +188,15 @@
                     <con:params/>
                     <con:element>data</con:element>
                 </con:representation>
-                <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="AdminUpdate" mediaType="application/json" postQueryString="false" id="efc6bc55-7b69-4992-974d-9a1c54d342ed">
+                <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="AdminUpdate" mediaType="application/json" postQueryString="false" id="efc6bc55-7b69-4992-974d-9a1c54d342ed">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request>{"name": "UserUpdated",
  "email": "user@yandex.ru",
  "password": "passwordNew",
- "roles": ["ROLE_USER"]
+ "roles": ["ROLE_USER","ROLE_ADMIN" ]
 }
                     </con:request>
                     <con:originalUri>http://localhost/topjava/rest/admin/users/100000</con:originalUri>
@@ -208,18 +208,18 @@
                     <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
                     <con:jmsPropertyConfig/>
                     <con:parameters/>
-                </con:request>
+                <con:parameterOrder/></con:request>
             </con:method>
         </con:resource>
-        <con:resource name="profile" path="/go2lunch/rest/profile" id="dc6bc427-b446-4a76-bbb7-94608e15aa11">
+        <con:resource name="profile" path="/profile" id="dc6bc427-b446-4a76-bbb7-94608e15aa11">
             <con:settings/>
             <con:parameters/>
-            <con:method name="" method="GET" id="4970902f-2d28-4e9e-bece-e944ea382323">
+            <con:resource name="menu" path="restaurants/100003/menu/2019-08-16" id="3c18338d-b49f-4254-b819-4245bd6b70d9"><con:settings/><con:parameters/><con:method name="Method 1" id="4c9c39f3-ec18-4e9f-95d3-9bf263cf813d" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="getDayMenu" id="ae4f5026-1985-42cb-9399-23d4bf872421" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint><con:request/><con:originalUri>http://localhost/go2lunch/api/v1.0/profile/restaurants/100003/menu/2019-08-16</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="restaurants" path="restaurants" id="04f09f90-97da-4efd-8633-9eca025607a9"><con:settings/><con:parameters/><con:method name="" id="2202153f-e07c-4699-8c4a-3b8d8bc1263c" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html;charset=utf-8</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:request name="getAllSortedByNameWithVotes" id="6ea82b2e-e5bb-46e0-8d1a-8e28c9ccabc2" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint><con:request/><con:originalUri>http://localhost/go2lunch/api/v1.0/profile/restaurants/</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:method name="" method="GET" id="4970902f-2d28-4e9e-bece-e944ea382323">
                 <con:settings/>
                 <con:parameters/>
                 <con:representation type="FAULT">
                     <con:mediaType>text/html;charset=utf-8</con:mediaType>
-                    <con:status>500</con:status>
+                    <con:status>500 404</con:status>
                     <con:params/>
                     <con:element>html</con:element>
                 </con:representation>
@@ -227,21 +227,21 @@
                     <con:mediaType>application/json</con:mediaType>
                     <con:status>200</con:status>
                     <con:params/>
-                    <con:element xmlns:ns="http://localhost/topjava/rest/admin/users/100000">ns:Response</con:element>
+                    <con:element xmlns:ns="http://localhost:8080/go2lunch/api/v1.0/admin/users/100000">ns:Response</con:element>
                 </con:representation>
                 <con:representation type="RESPONSE">
                     <con:mediaType>application/json;charset=UTF-8</con:mediaType>
                     <con:status>200</con:status>
                     <con:params/>
-                    <con:element xmlns:prof="http://localhost/topjava/rest/profile">prof:Response</con:element>
+                    <con:element xmlns:prof="http://localhost:8080/go2lunch/api/v1.0/profile">prof:Response</con:element>
                 </con:representation>
                 <con:request name="Get" mediaType="application/json" id="284adf4f-eb7e-44eb-83a9-b038a370efc4">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request/>
-                    <con:originalUri>http://localhost/topjava/rest/profile</con:originalUri>
+                    <con:originalUri>http://localhost:8080/go2lunch/api/v1.0/profile</con:originalUri>
                     <con:credentials>
                         <con:selectedAuthProfile>Basic</con:selectedAuthProfile>
                         <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
@@ -269,7 +269,7 @@
                     <con:mediaType>application/json</con:mediaType>
                     <con:status>201</con:status>
                     <con:params/>
-                    <con:element xmlns:user="http://localhost/topjava/rest/admin/users">user:Response</con:element>
+                    <con:element xmlns:user="http://localhost:8080/go2lunch/api/v1.0/admin/users">user:Response</con:element>
                 </con:representation>
                 <con:representation type="RESPONSE">
                     <con:mediaType xsi:nil="true"/>
@@ -307,18 +307,17 @@
                     <con:params/>
                     <con:element>data</con:element>
                 </con:representation>
-                <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:prof="http://localhost/topjava/rest/profile">prof:Fault</con:element></con:representation><con:request name="Update" mediaType="application/json" postQueryString="false" id="e45dfcce-1514-43ae-9233-a60407161db6">
+                <con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType>application/json;charset=UTF-8</con:mediaType><con:status>500</con:status><con:params/><con:element xmlns:prof="http://localhost/topjava/rest/profile">prof:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>204</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Update" mediaType="application/json" postQueryString="false" id="e45dfcce-1514-43ae-9233-a60407161db6">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request>{"name": "New777",
  "email": "new777@yandex.ru",
- "password": "passwordNew",
- "roles": ["ROLE_USER"]
+ "password": "passwordNew"
 }
                     </con:request>
-                    <con:originalUri>http://localhost/topjava/rest/profile</con:originalUri>
+                    <con:originalUri>http://localhost:8080/go2lunch/api/v1.0/profile</con:originalUri>
                     <con:credentials>
                         <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
                         <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
@@ -358,9 +357,9 @@
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
-                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:endpoint>http://localhost:8080/go2lunch/api/v1.0</con:endpoint>
                     <con:request/>
-                    <con:originalUri>http://localhost/topjava/rest/profile</con:originalUri>
+                    <con:originalUri>http://localhost:8080/go2lunch/api/v1.0/profile</con:originalUri>
                     <con:credentials>
                         <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
                         <con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes>
