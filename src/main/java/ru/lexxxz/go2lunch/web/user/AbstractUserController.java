@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.lexxxz.go2lunch.model.User;
-import ru.lexxxz.go2lunch.service.MenuService;
-import ru.lexxxz.go2lunch.service.RestaurantService;
 import ru.lexxxz.go2lunch.service.UserService;
 import ru.lexxxz.go2lunch.service.VoteService;
 import ru.lexxxz.go2lunch.to.UserTo;
@@ -21,12 +19,6 @@ public abstract class AbstractUserController {
 
     @Autowired
     protected UserService service;
-
-    @Autowired
-    protected RestaurantService restaurantService;
-
-    @Autowired
-    protected MenuService menuService;
 
     @Autowired
     protected VoteService voteService;

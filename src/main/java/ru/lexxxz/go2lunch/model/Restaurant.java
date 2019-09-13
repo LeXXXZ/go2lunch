@@ -13,6 +13,10 @@ public class Restaurant extends AbstractNamedEntity {
         super(id, name);
     }
 
+    public Restaurant(Restaurant restaurant) {
+        this(restaurant.id, restaurant.name);
+    }
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("date DESC")
     protected List<Menu> menus;
