@@ -7,6 +7,7 @@ import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.service.MenuService;
 import ru.lexxxz.go2lunch.service.RestaurantService;
 import ru.lexxxz.go2lunch.service.UserService;
+import ru.lexxxz.go2lunch.service.VoteService;
 import ru.lexxxz.go2lunch.to.UserTo;
 import ru.lexxxz.go2lunch.util.UserUtil;
 
@@ -26,6 +27,9 @@ public abstract class AbstractUserController {
 
     @Autowired
     protected MenuService menuService;
+
+    @Autowired
+    protected VoteService voteService;
 
     public List<User> getAll() {
         log.info("getAll");

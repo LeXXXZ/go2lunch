@@ -22,4 +22,9 @@ public class RestaurantRepositoryImpl implements RestaurantRepository
         return repository.findAll(SORT_NAME);
     }
 
+    @Override
+    public Restaurant get(int id) {
+        return repository.findById(id).orElse(null);
+    }
+
 }

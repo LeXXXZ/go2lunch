@@ -55,7 +55,16 @@ public class ProfileRestController extends AbstractUserController {
     public List<RestaurantTo> getAllRestaurantsWithVotes(){
         return restaurantService.getAllWithVotes();  }
 
+    @GetMapping(value = "/restaurants/{id}/vote", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Boolean isRestaurantVoted(@PathVariable int id){
+        return voteService.isVoted(id, SecurityUtil.authUserId());  }
 
+        @PostMapping(value = "/restaurants/{id}/vote")
+        @ResponseStatus(value = HttpStatus.OK)
+        public ResponseEntity vote (@PathVariable int id) {
+            voteService.vote(id, SecurityUtil.authUserId());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
 
     //    User actions with restaurants menu
 

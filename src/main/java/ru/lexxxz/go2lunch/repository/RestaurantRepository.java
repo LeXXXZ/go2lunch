@@ -8,4 +8,5 @@ public interface RestaurantRepository {
 
 List<Restaurant> getAll();
 
+    Restaurant get(int id);
 }
