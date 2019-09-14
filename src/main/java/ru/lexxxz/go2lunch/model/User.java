@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
@@ -93,12 +94,12 @@ public class User extends AbstractNamedEntity implements HasEmail {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email=" + email +
-                ", name=" + name +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                '}';
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("email='" + email + "'")
+                .add("roles=" + roles)
+                .add("enabled=" + enabled)
+                .toString();
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.StringJoiner;
 
 @Entity
 @Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = "date", name = "menus_unique_date_idx")})
@@ -42,5 +43,26 @@ public class Menu extends AbstractBaseEntity {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Menu.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("restaurant=" + restaurant)
+                .add("date=" + date)
+                .add("dishes=" + dishes)
+                .toString();
     }
 }

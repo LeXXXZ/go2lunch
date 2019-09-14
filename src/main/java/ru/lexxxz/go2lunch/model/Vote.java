@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.StringJoiner;
 
 @Entity
 @Table(name = "votes")
@@ -47,7 +48,29 @@ public class Vote extends AbstractBaseEntity{
         this.date = date;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Vote.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("date=" + date)
+                .add("user=" + user)
+                .add("restaurant=" + restaurant)
+                .toString();
     }
 }
