@@ -12,8 +12,7 @@ import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFound;
-import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
+import static ru.lexxxz.go2lunch.util.ValidationUtil.*;
 
 @Service("userService")
 //@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -27,7 +26,7 @@ public class UserService {
     }
 
     public User create(User user) {
-        Assert.notNull(user, "user must not be null");
+        assertNotNullEntity(user);
         return repository.save(user);
     }
 
@@ -49,7 +48,7 @@ public class UserService {
     }
 
     public void update(User user) throws NotFoundException {
-        Assert.notNull(user, "user must not be null");
+        assertNotNullEntity(user);
         checkNotFoundWithId(repository.save(user), user.getId());
     }
 

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import ru.lexxxz.go2lunch.model.Restaurant;
 import ru.lexxxz.go2lunch.repository.jpa.RestaurantRepository;
 import ru.lexxxz.go2lunch.repository.jpa.VoteRepository;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
 import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("restaurantService")
@@ -51,18 +51,28 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public Restaurant get(int id) {
-        return restaurantRepository.findById(id).orElse(null);
+    public Restaurant get(int id) throws NotFoundException {
+        return checkNotFoundWithId(restaurantRepository.findById(id).orElse(null), id);
     }
 
     @Transactional
-    public void delete(int id) {
-        restaurantRepository.deleteById(id);
+    public void delete(int id) throws NotFoundException {
+        log.info("Delete rest with Id: {}", id);
+        checkNotFoundWithId(restaurantRepository.delete(id) != 0, id);
+
     }
 
     @Transactional
-    public void update(Restaurant restaurant) throws NotFoundException {
-        Assert.notNull(restaurant, "restaurant must not be null");
+    public void update(Restaurant restaurant) {
+        assertNotNullEntity(restaurant);
+        log.info("Update rest {}", restaurant);
         checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
+    }
+
+    @Transactional
+    public Restaurant create(Restaurant restaurant) {
+        assertNotNullEntity(restaurant);
+        log.info("Create rest {}", restaurant);
+        return restaurantRepository.save(restaurant);
     }
 }

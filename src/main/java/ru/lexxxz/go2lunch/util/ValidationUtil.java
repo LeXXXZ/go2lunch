@@ -1,6 +1,7 @@
 package ru.lexxxz.go2lunch.util;
 
 import org.slf4j.Logger;
+import org.springframework.util.Assert;
 import ru.lexxxz.go2lunch.HasId;
 import ru.lexxxz.go2lunch.util.exception.IllegalRequestDataException;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
@@ -29,6 +30,10 @@ public class ValidationUtil {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
         }
+    }
+
+    public static <T> void assertNotNullEntity(T entity) throws IllegalArgumentException{
+        Assert.notNull(entity, "Entity must not be null");
     }
 
     public static void checkNew(HasId bean) {
