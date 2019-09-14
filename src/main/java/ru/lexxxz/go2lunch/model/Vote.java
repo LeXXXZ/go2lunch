@@ -69,8 +69,6 @@ public class Vote extends AbstractBaseEntity{
         return new StringJoiner(", ", Vote.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("date=" + date)
-                .add("user=" + user)
-                .add("restaurant=" + restaurant)
                 .toString();
     }
 }

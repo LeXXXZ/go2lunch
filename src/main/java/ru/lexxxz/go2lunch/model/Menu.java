@@ -60,9 +60,7 @@ public class Menu extends AbstractBaseEntity {
     public String toString() {
         return new StringJoiner(", ", Menu.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("restaurant=" + restaurant)
                 .add("date=" + date)
-                .add("dishes=" + dishes)
                 .toString();
     }
 }

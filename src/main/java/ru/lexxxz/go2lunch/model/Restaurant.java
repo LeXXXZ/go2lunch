@@ -35,7 +35,6 @@ public class Restaurant extends AbstractNamedEntity {
         return new StringJoiner(", ", Restaurant.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("name='" + name + "'")
-                .add("menus=" + menus)
                 .toString();
     }
 }
