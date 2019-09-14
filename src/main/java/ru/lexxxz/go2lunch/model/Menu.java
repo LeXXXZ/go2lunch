@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = "date", name = "menus_unique_date_idx")})
 public class Menu extends AbstractBaseEntity {
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = false, columnDefinition = "DATE DEFAULT today()")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
@@ -29,7 +29,7 @@ public class Menu extends AbstractBaseEntity {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
-    @OrderBy("date DESC")
+    @OrderBy("price DESC")
     protected List<Dish> dishes;
 
     @ManyToOne(fetch = FetchType.LAZY)

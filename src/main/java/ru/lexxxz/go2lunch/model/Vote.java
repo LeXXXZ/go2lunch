@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity{
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date", nullable = false, columnDefinition = "DATE DEFAULT today()")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
