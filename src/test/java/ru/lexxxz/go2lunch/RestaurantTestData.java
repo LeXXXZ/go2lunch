@@ -26,7 +26,8 @@ public class RestaurantTestData {
     public static final Menu MENU1_OF_REST_1 = new Menu(100004 , DATE_1);
     public static final Menu MENU2_OF_REST_1 = new Menu(100006 , DATE_2);
 
-    public static final List<Dish> DISHES_FOR_MENU_100004 = List.of(new Dish(100009,"CheeseBurger", 1000), new Dish(100008,"BigMac", 2000));
+    public static final Dish DISH_1_FOR_MENU_100004 = new Dish(100009,"CheeseBurger", 1000);
+    public static final Dish DISH_2_FOR_MENU_100004 = new Dish(100008,"BigMac", 2000);
 
-
+    public static final List<Dish> DISHES_FOR_MENU_100004 = List.of(DISH_1_FOR_MENU_100004 ,DISH_2_FOR_MENU_100004 );
 }

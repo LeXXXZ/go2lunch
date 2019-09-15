@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.lexxxz.go2lunch.model.Dish;
 import ru.lexxxz.go2lunch.model.Menu;
+import ru.lexxxz.go2lunch.repository.jpa.DishRepository;
 import ru.lexxxz.go2lunch.repository.jpa.MenuRepository;
 import ru.lexxxz.go2lunch.repository.jpa.RestaurantRepository;
 import ru.lexxxz.go2lunch.util.exception.IllegalRequestDataException;
@@ -24,11 +26,24 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
     private final RestaurantRepository restaurantRepository;
+    private final DishRepository dishRepository;
 
     @Autowired
-    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository, DishRepository dishRepository) {
         this.restaurantRepository = restaurantRepository;
         this.menuRepository = menuRepository;
+        this.dishRepository = dishRepository;
+    }
+
+    public List<Dish> getDayMenuDishes(LocalDate date, int restaurantId) {
+        checkNotFoundRestaurant(restaurantId);
+        Integer dayMenuId = menuRepository.findMenuIdByRestaurantIdAndDate(restaurantId, date);
+        log.info("Dishes for the menu @{} for the restaurant with id: {} ", date, restaurantId);
+        return dishRepository.getAllByMenu_Id(dayMenuId);
+    }
+
+    public List<Dish> getTodayMenuDishes(int restaurantId) {
+        return getDayMenuDishes(LocalDate.now(), restaurantId);
     }
 
     public List<Menu> getAll(int restaurantId) {
@@ -63,7 +78,7 @@ public class MenuService {
         else throw new IllegalRequestDataException("No menu for restaurant with id: " + restaurantId + " @" + date.toString());
     }
 
-    public void checkNotFoundRestaurant(int restaurantId) {
+    private void checkNotFoundRestaurant(int restaurantId) {
         checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
     }
 }

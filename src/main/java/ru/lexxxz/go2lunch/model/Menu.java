@@ -30,7 +30,7 @@ public class Menu extends AbstractBaseEntity {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
-    @OrderBy("price DESC")
+    @OrderBy("price ASC")
     protected List<Dish> dishes;
 
     @ManyToOne(fetch = FetchType.LAZY)
