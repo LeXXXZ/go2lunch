@@ -27,6 +27,7 @@ public class RestaurantRestController {
     @Autowired
     protected RestaurantService restaurantService;
 
+    //TODO add menus to response
     @GetMapping
     public List<Restaurant> getAll(){
         log.info("Request to: " + REST_URL);
