@@ -8,15 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.lexxxz.go2lunch.model.Dish;
 import ru.lexxxz.go2lunch.model.Restaurant;
-import ru.lexxxz.go2lunch.service.MenuService;
 import ru.lexxxz.go2lunch.service.RestaurantService;
-import ru.lexxxz.go2lunch.service.VoteService;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 import static ru.lexxxz.go2lunch.util.ValidationUtil.assureIdConsistent;
@@ -31,13 +27,6 @@ public class RestaurantRestController {
     @Autowired
     protected RestaurantService restaurantService;
 
-    @Autowired
-    protected MenuService menuService;
-
-    @Autowired
-    protected VoteService voteService;
-
-    //    Actions with restaurants
     @GetMapping
     public List<Restaurant> getAll(){
         log.info("Request to: " + REST_URL);
@@ -69,14 +58,4 @@ public class RestaurantRestController {
         assureIdConsistent(restaurant, id);
         restaurantService.update(restaurant);
     }
-
-
-    //    Actions with restaurants menu
-    @GetMapping(value = "/restaurants/{id}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getTodayMenu(@PathVariable int id){
-        return menuService.getTodayMenuDishes(id);  }
-
-    @GetMapping(value = "/restaurants/{id}/menu/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getMenuByDay(@PathVariable int id, @PathVariable String date){
-        return menuService.getDayMenuDishes(LocalDate.parse(date), id);  }
 }

@@ -7,15 +7,19 @@ import ru.lexxxz.go2lunch.model.Menu;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
-@Query("SELECT m FROM #{#entityName} m WHERE m.restaurant.id = ?1 and m.date = ?2 ")
-    Menu getByRestaurantIdAndDate(Integer restaurantId, LocalDate date);
+//    TODO check the equality of queries with findByRestaurantIdAndDate
+//@Query("SELECT m FROM #{#entityName} m WHERE m.restaurant.id = ?1 and m.date = ?2 ")
+//    Menu getByRestaurantIdAndDate(Integer restaurantId, LocalDate date);
 
 @Query("SELECT m.id FROM #{#entityName} m WHERE m.restaurant.id = ?1 and m.date = ?2 ")
     Integer findMenuIdByRestaurantIdAndDate(Integer restaurantId, LocalDate date);
 
-    List<Menu> findAllByRestaurantId(Integer restaurantId);
+    List<Menu> findAllByRestaurantIdOrderByDateDesc(Integer restaurantId);
+
+    Optional<Menu> findByRestaurantIdAndDate(Integer restId, LocalDate date);
 }

@@ -1,6 +1,7 @@
 package ru.lexxxz.go2lunch;
 
 import ru.lexxxz.go2lunch.model.Dish;
+import ru.lexxxz.go2lunch.model.Menu;
 import ru.lexxxz.go2lunch.model.Restaurant;
 
 import java.time.LocalDate;
@@ -21,6 +22,9 @@ public class RestaurantTestData {
 
     public static final LocalDate DATE_1 = LocalDate.of(2019, 8, 16);
     public static final LocalDate DATE_2 = LocalDate.of(2019, 8, 17);
+
+    public static final Menu MENU1_OF_REST_1 = new Menu(100004 , DATE_1);
+    public static final Menu MENU2_OF_REST_1 = new Menu(100006 , DATE_2);
 
     public static final List<Dish> DISHES_FOR_MENU_100004 = List.of(new Dish(100009,"CheeseBurger", 1000), new Dish(100008,"BigMac", 2000));
 
