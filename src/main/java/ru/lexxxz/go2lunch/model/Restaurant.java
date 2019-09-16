@@ -1,7 +1,9 @@
 package ru.lexxxz.go2lunch.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 
 @Entity
@@ -16,11 +18,20 @@ public class Restaurant extends AbstractNamedEntity {
 
     public Restaurant(Restaurant restaurant) {
         this(restaurant.id, restaurant.name);
+        this.menus = restaurant.getMenus();
+        this.dishes = restaurant.getDishes();
+        this.votes = restaurant.getVotes();
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("date DESC")
-    protected List<Menu> menus;
+    private List<Menu> menus;
+
+    @OneToMany(mappedBy = "restaurant")
+    private Set<Dish> dishes;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    private Collection<Vote> votes;
 
     public List<Menu> getMenus() {
         return menus;
@@ -28,6 +39,22 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
+    }
+
+    public Set<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(Set<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    public Collection<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Collection<Vote> votes) {
+        this.votes = votes;
     }
 
     @Override

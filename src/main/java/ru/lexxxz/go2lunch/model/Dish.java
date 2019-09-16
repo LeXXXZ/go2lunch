@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.StringJoiner;
 
 
@@ -23,7 +24,8 @@ public class Dish extends AbstractNamedEntity{
         this.id = dish.getId();
         this.name = dish.getName();
         this.price = dish.getPrice();
-        this.menu = dish.getMenu();
+        this.menus = dish.getMenus();
+        this.restaurant = dish.getRestaurant();
     }
 
     public Dish(Integer id, String name, Integer price) {
@@ -35,10 +37,21 @@ public class Dish extends AbstractNamedEntity{
         this(null, name, price);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false)
-    private Menu menu;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "dishes")
+    private List<Menu> menus;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id")
+    private Restaurant restaurant;
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+    
     public Integer getPrice() {
         return price;
     }
@@ -47,12 +60,12 @@ public class Dish extends AbstractNamedEntity{
         this.price = price;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public List<Menu> getMenus() {
+        return menus;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
     }
 
     @Override
@@ -63,4 +76,5 @@ public class Dish extends AbstractNamedEntity{
                 .add("price=" + price)
                 .toString();
     }
+
 }

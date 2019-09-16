@@ -47,6 +47,7 @@ public class DishService {
         if (dishRepository.existsByNameAndMenuId(dish.getName(), menuId)) {
             throw new IllegalRequestDataException("Dish " + dish.getName() + " already exists");
         }
+        //TODO FIX
         dish.setMenu(menuRepository.getOne(menuId));
         return dishRepository.save(dish);
     }
@@ -55,6 +56,7 @@ public class DishService {
     public void update(Dish dish, int menuId, int dishId) {
         assertNotNullEntity(dish);
         if (dishRepository.findDishByIdAndMenu_Id(dish.getId(), menuId).orElse(null) != null) {
+            //TODO FIX
             dish.setMenu(menuRepository.getOne(menuId));
             dishRepository.save(dish);
         } else throw new IllegalRequestDataException("No dish with id: " + dish + " for menu with id: " + menuId);

@@ -29,9 +29,19 @@ public class Menu extends AbstractBaseEntity {
         this.date = date;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+    public Menu(Menu menu) {
+        this.date = menu.getDate();
+        this.dishes = menu.getDishes();
+        this.restaurant = menu.getRestaurant();
+    }
+
+    @ManyToMany
+    @JoinTable(name="menu_dish",
+            joinColumns = @JoinColumn(name="dish_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="menu_id", referencedColumnName="id")
+    )
     @OrderBy("price ASC")
-    protected List<Dish> dishes;
+    private List<Dish> dishes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
@@ -47,11 +57,12 @@ public class Menu extends AbstractBaseEntity {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
-
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
     public List<Dish> getDishes() {
         return dishes;
     }
-
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
     }
