@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.lexxxz.go2lunch.model.Restaurant;
-import ru.lexxxz.go2lunch.to.RestaurantTo;
-import ru.lexxxz.go2lunch.util.RestaurantUtil;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static ru.lexxxz.go2lunch.RestaurantTestData.*;
+import static ru.lexxxz.go2lunch.util.RestaurantUtil.asTo;
 
 class RestaurantServiceTest extends AbstractServiceTest{
 
@@ -20,22 +20,15 @@ class RestaurantServiceTest extends AbstractServiceTest{
     protected RestaurantService restaurantService;
 
     @Test
-    void getAllWithVotes() {
-        Iterable<RestaurantTo> restaurantTos = restaurantService.getAllWithVotes();
-        assertThat(restaurantTos).usingElementComparatorIgnoringFields("menus")
-                .isEqualTo(List.of(RestaurantUtil.asTo(KFC, VOTES_2), RestaurantUtil.asTo(MACD, VOTES_1)));
-    }
-
-    @Test
     void getAllSorted() {
         List<Restaurant> all = restaurantService.getAll();
-        assertThat(all).usingElementComparatorIgnoringFields("menus").isEqualTo(List.of(KFC, MACD));
+        assertThat(all).containsExactly(KFC, MACD).isSortedAccordingTo(Comparator.comparing(Restaurant::getName));
     }
 
     @Test
     void getById() {
         Restaurant restaurant = restaurantService.get(REST1_ID);
-        assertThat(restaurant).isEqualToIgnoringGivenFields(MACD,"menus");
+        assertThat(restaurant).isEqualToIgnoringGivenFields(MACD,"menus", "dishes", "votes");
     }
 
     @Test
@@ -47,7 +40,7 @@ class RestaurantServiceTest extends AbstractServiceTest{
     @Test
     void delete() {
         restaurantService.delete(REST1_ID);
-        assertThat(restaurantService.getAll()).usingElementComparatorIgnoringFields("menus").isEqualTo(List.of(KFC));
+        assertThat(restaurantService.getAll()).usingElementComparatorIgnoringFields("menus", "dishes", "votes").isEqualTo(List.of(KFC));
     }
 
     @Test
@@ -60,23 +53,23 @@ class RestaurantServiceTest extends AbstractServiceTest{
     void update() {
         Restaurant updated = new Restaurant(MACD);
         updated.setName("UpdatedName");
-        restaurantService.update(new Restaurant(updated));
-        assertThat(restaurantService.get(REST1_ID)).isEqualToIgnoringGivenFields(updated, "menus");
+        restaurantService.update(asTo(new Restaurant(updated)));
+        assertThat(restaurantService.get(REST1_ID)).isEqualToIgnoringGivenFields(updated, "menus", "dishes", "votes");
 
     }
 
     @Test
     void create() {
         Restaurant newRest = new Restaurant(null, "MamaRoma");
-        Restaurant createdRest = restaurantService.create(new Restaurant(newRest));
+        Restaurant createdRest = restaurantService.create(asTo(new Restaurant(newRest)));
         newRest.setId(createdRest.getId());
-        assertThat(createdRest).isEqualToIgnoringGivenFields(newRest, "menus");
+        assertThat(createdRest).isEqualToIgnoringGivenFields(newRest, "menus", "dishes", "votes");
     }
 
     @Test
     void createDuplicatedName() {
         Restaurant newRest = new Restaurant(null, "KFC");
         assertThatExceptionOfType(DataAccessException.class)
-                .isThrownBy(() -> { restaurantService.create(new Restaurant(newRest)); });
+                .isThrownBy(() -> { restaurantService.create(asTo(new Restaurant(newRest))); });
     }
 }

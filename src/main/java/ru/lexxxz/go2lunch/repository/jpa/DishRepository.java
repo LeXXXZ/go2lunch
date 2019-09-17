@@ -14,17 +14,16 @@ import java.util.Optional;
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Integer> {
 
-    @Query("SELECT d FROM #{#entityName} d left JOIN Menu m ON d.menu.id= m.id WHERE m.id=?1 ORDER BY d.price")
-    List<Dish> getAllByMenu_Id(Integer menuId);
+    List<Dish> getAllByRestaurant_Id(int menuId);
 
-    Optional<Dish> findDishByIdAndMenu_Id(int dishId, int menuId);
+    Optional<Dish> findDishById(int dishId);
 
-    List<Dish> findAllByMenu_IdOrderByPrice(int menuId);
+    List<Dish> findAllByRestaurant_IdOrderByPrice(int restId);
 
     @Transactional
     @Modifying
     @Query("DELETE FROM #{#entityName} d WHERE d.id=:id")
     int delete(@Param("id") int dishId);
 
-    boolean existsByNameAndMenuId(String dishName, int menuId);
+    boolean existsByNameAndRestaurantId(String dishName, int restaurantId);
 }

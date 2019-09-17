@@ -39,7 +39,7 @@ public class MenuService {
         checkNotFoundRestaurant(restaurantId);
         Integer dayMenuId = menuRepository.findMenuIdByRestaurantIdAndDate(restaurantId, date);
         log.info("Dishes for the menu @{} for the restaurant with id: {} ", date, restaurantId);
-        return dishRepository.getAllByMenu_Id(dayMenuId);
+        return dishRepository.getAllByRestaurant_Id(restaurantId);
     }
 
     public List<Dish> getTodayMenuDishes(int restaurantId) {

@@ -1,4 +1,4 @@
-package ru.lexxxz.go2lunch.web;
+package ru.lexxxz.go2lunch.web.restaurant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.lexxxz.go2lunch.model.Restaurant;
 import ru.lexxxz.go2lunch.service.RestaurantService;
+import ru.lexxxz.go2lunch.to.RestaurantTo;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -22,25 +23,24 @@ import static ru.lexxxz.go2lunch.util.ValidationUtil.assureIdConsistent;
 public class RestaurantRestController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public static final String REST_URL = "/api/v1.0/restaurants";
+    public static final String REST_URL = "/api/v1.0/admin/restaurants";
 
     @Autowired
     protected RestaurantService restaurantService;
 
-    //TODO add menus to response
     @GetMapping
     public List<Restaurant> getAll(){
         log.info("Request to: " + REST_URL);
         return restaurantService.getAll();  }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant get(@PathVariable int id){
+    public RestaurantTo get(@PathVariable int id){
         log.info("Request to: " + REST_URL + "/" + id);
-        return restaurantService.get(id);  }
+        return restaurantService.getTo(id);  }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
-        Restaurant created = new Restaurant(restaurant);
+    public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody RestaurantTo restaurantTo) {
+        Restaurant created = restaurantService.create(restaurantTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -55,8 +55,8 @@ public class RestaurantRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
-        assureIdConsistent(restaurant, id);
-        restaurantService.update(restaurant);
+    public void update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable int id) {
+        assureIdConsistent(restaurantTo, id);
+        restaurantService.update(restaurantTo);
     }
 }

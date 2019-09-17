@@ -1,4 +1,4 @@
-package ru.lexxxz.go2lunch.web;
+package ru.lexxxz.go2lunch.web.restaurant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

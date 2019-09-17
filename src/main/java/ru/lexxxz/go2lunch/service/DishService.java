@@ -31,7 +31,7 @@ public class DishService {
     }
 
     public Dish get(int dishId, int menuId) {
-        return dishRepository.findDishByIdAndMenu_Id(dishId, menuId).orElseThrow(() -> new NotFoundException("No such dish"));
+        return dishRepository.findDishById(dishId).orElseThrow(() -> new NotFoundException("No such dish"));
     }
 
     @Transactional
@@ -42,22 +42,22 @@ public class DishService {
     }
 
     @Transactional
-    public Dish create(Dish dish, int menuId) {
+    public Dish create(Dish dish, int restId) {
         assertNotNullEntity(dish);
-        if (dishRepository.existsByNameAndMenuId(dish.getName(), menuId)) {
+        if (dishRepository.existsByNameAndRestaurantId(dish.getName(), restId)) {
             throw new IllegalRequestDataException("Dish " + dish.getName() + " already exists");
         }
         //TODO FIX
-        dish.setMenu(menuRepository.getOne(menuId));
+//        dish.setMenu(menuRepository.getOne(menuId));
         return dishRepository.save(dish);
     }
 
     @Transactional
     public void update(Dish dish, int menuId, int dishId) {
         assertNotNullEntity(dish);
-        if (dishRepository.findDishByIdAndMenu_Id(dish.getId(), menuId).orElse(null) != null) {
+        if (dishRepository.findDishById(dish.getId()).orElse(null) != null) {
             //TODO FIX
-            dish.setMenu(menuRepository.getOne(menuId));
+//            dish.setMenu(menuRepository.getOne(menuId));
             dishRepository.save(dish);
         } else throw new IllegalRequestDataException("No dish with id: " + dish + " for menu with id: " + menuId);
     }
@@ -68,7 +68,7 @@ public class DishService {
 
     public List<Dish> getAll(int menuId) {
         checkNotFoundMenu(menuId);
-        return dishRepository.findAllByMenu_IdOrderByPrice(menuId);
+        return dishRepository.findAllByRestaurant_IdOrderByPrice(menuId);
     }
 
 }

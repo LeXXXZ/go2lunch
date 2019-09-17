@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.service.RestaurantService;
-import ru.lexxxz.go2lunch.to.RestaurantTo;
 import ru.lexxxz.go2lunch.to.UserTo;
 import ru.lexxxz.go2lunch.web.SecurityUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)
@@ -53,10 +51,6 @@ public class ProfileRestController extends AbstractUserController {
     }
 
     //    User actions with restaurants votes
-
-    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RestaurantTo> getAllRestaurantsWithVotes(){
-        return restaurantService.getAllWithVotes();  }
 
         //TODO Change response to RestaurantTo with vote
         //TODO add notfoundcheck for restaurant id

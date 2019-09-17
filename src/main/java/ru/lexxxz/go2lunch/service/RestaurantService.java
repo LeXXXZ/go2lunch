@@ -3,6 +3,7 @@ package ru.lexxxz.go2lunch.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Restaurant;
@@ -12,8 +13,6 @@ import ru.lexxxz.go2lunch.to.RestaurantTo;
 import ru.lexxxz.go2lunch.util.RestaurantUtil;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
@@ -33,22 +32,14 @@ public class RestaurantService {
         this.voteRepository = voteRepository;
     }
 
-    public List<RestaurantTo> getAllWithVotes() {
-        List<RestaurantTo> restaurantToList = new ArrayList<>();
-        List<Restaurant> restaurants = restaurantRepository.findAll();
-        log.info("All rests: {}", restaurants);
-        for (Restaurant r : restaurants) {
-            log.info("Count votes for rest {}", r.toString());
-            restaurantToList.add(RestaurantUtil.asTo(r, voteRepository.countAllByRestaurantId(r.getId())));
-        }
-        restaurantToList.sort(Comparator.comparing(RestaurantTo::getName));
-        return restaurantToList;
-    }
-
     public List<Restaurant> getAll() {
-        List<Restaurant> restaurants = restaurantRepository.findAllByIdNotNullOrderByName();
+        List<Restaurant> restaurants = restaurantRepository.findAll(Sort.by("name"));
         log.info("All rests: {}", restaurants);
         return restaurants;
+    }
+
+    public RestaurantTo getTo(int id) throws NotFoundException {
+        return RestaurantUtil.asTo(checkNotFoundWithId(restaurantRepository.findById(id).orElse(null), id));
     }
 
     public Restaurant get(int id) throws NotFoundException {
@@ -63,16 +54,17 @@ public class RestaurantService {
     }
 
     @Transactional
-    public void update(Restaurant restaurant) {
-        assertNotNullEntity(restaurant);
-        log.info("Update rest {}", restaurant);
-        checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
+    public void update(RestaurantTo restaurantTo) {
+        assertNotNullEntity(restaurantTo);
+        log.info("Update rest {}", restaurantTo);
+        Restaurant restaurant = get(restaurantTo.getId());
+        checkNotFoundWithId(restaurantRepository.save(RestaurantUtil.updateFromTo(restaurant, restaurantTo)), restaurantTo.getId());
     }
 
     @Transactional
-    public Restaurant create(Restaurant restaurant) {
-        assertNotNullEntity(restaurant);
-        log.info("Create rest {}", restaurant);
-        return restaurantRepository.save(restaurant);
+    public Restaurant create(RestaurantTo restaurantTo) {
+        assertNotNullEntity(restaurantTo);
+        log.info("Create rest {}", restaurantTo);
+        return restaurantRepository.save(RestaurantUtil.createNewFromTo(restaurantTo));
     }
 }

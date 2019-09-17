@@ -20,13 +20,13 @@ class DishServiceTest extends AbstractServiceTest {
     @Test
     void getAllSorted() {
         List<Dish> all = dishService.getAll(100004);
-        assertThat(all).usingElementComparatorIgnoringFields("menu").isEqualTo(DISHES_FOR_MENU_100004);
+        assertThat(all).usingElementComparatorIgnoringFields("menu").isEqualTo(DISHES_FOR_MENU_100021);
     }
 
     @Test
     void getById() {
-        Dish dish = dishService.get(DISH_1_FOR_MENU_100004.getId(), 100004);
-        assertThat(dish).isEqualToIgnoringGivenFields(DISH_1_FOR_MENU_100004, "menu");
+        Dish dish = dishService.get(DISH_1_FOR_MENU_100021.getId(), 100004);
+        assertThat(dish).isEqualToIgnoringGivenFields(DISH_2_FOR_MENU_100023, "menu");
     }
 
     @Test
@@ -41,14 +41,14 @@ class DishServiceTest extends AbstractServiceTest {
     void getNotFoundAtMenu() {
         assertThatExceptionOfType(NotFoundException.class)
                 .isThrownBy(() -> {
-                    dishService.get(DISH_1_FOR_MENU_100004.getId(), 1);
+                    dishService.get(DISH_1_FOR_MENU_100021.getId(), 1);
                 });
     }
 
     @Test
     void delete() {
-        dishService.delete(DISH_1_FOR_MENU_100004.getId(), 100004);
-        assertThat(dishService.getAll(100004)).usingElementComparatorIgnoringFields("menu").isEqualTo(List.of(DISH_2_FOR_MENU_100004));
+        dishService.delete(DISH_1_FOR_MENU_100021.getId(), 100004);
+        assertThat(dishService.getAll(100004)).usingElementComparatorIgnoringFields("menu").isEqualTo(List.of(DISH_2_FOR_MENU_100023));
     }
 
     @Test
@@ -61,10 +61,10 @@ class DishServiceTest extends AbstractServiceTest {
 
     @Test
     void update() {
-        Dish updated = new Dish(DISH_1_FOR_MENU_100004);
+        Dish updated = new Dish(DISH_1_FOR_MENU_100021);
         updated.setName("UpdatedDishName");
-        dishService.update(new Dish(updated), 100004, DISH_1_FOR_MENU_100004.getId());
-        assertThat(dishService.get(DISH_1_FOR_MENU_100004.getId(), 100004)).isEqualToIgnoringGivenFields(updated, "menu");
+        dishService.update(new Dish(updated), 100004, DISH_1_FOR_MENU_100021.getId());
+        assertThat(dishService.get(DISH_1_FOR_MENU_100021.getId(), 100004)).isEqualToIgnoringGivenFields(updated, "menu");
 
     }
 

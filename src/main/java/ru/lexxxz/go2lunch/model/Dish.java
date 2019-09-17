@@ -41,7 +41,7 @@ public class Dish extends AbstractNamedEntity{
     private List<Menu> menus;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "rest_id")
     private Restaurant restaurant;
 
     public Restaurant getRestaurant() {
@@ -51,7 +51,7 @@ public class Dish extends AbstractNamedEntity{
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
-    
+
     public Integer getPrice() {
         return price;
     }

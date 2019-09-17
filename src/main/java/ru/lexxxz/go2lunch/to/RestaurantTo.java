@@ -1,10 +1,9 @@
 package ru.lexxxz.go2lunch.to;
 
-import org.hibernate.validator.constraints.Range;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class RestaurantTo extends BaseTo implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -13,16 +12,12 @@ public class RestaurantTo extends BaseTo implements Serializable {
     @Size(min = 2, max = 100)
     private String name;
 
-    @Range(min = 0)
-    private int votes;
-
     public RestaurantTo() {
     }
 
-    public RestaurantTo(Integer id, String name, int votes) {
+    public RestaurantTo(Integer id, String name) {
         super(id);
         this.name = name;
-        this.votes = votes;
     }
 
     public String getName() {
@@ -33,21 +28,12 @@ public class RestaurantTo extends BaseTo implements Serializable {
         this.name = name;
     }
 
-    public int getVotes() {
-        return votes;
-    }
-
-    public void setVotes(int votes) {
-        this.votes = votes;
-    }
-
     @Override
     public String toString() {
-        return "RestaurantTo{" +
-                "name='" + name + '\'' +
-                ", votes=" + votes +
-                ", id=" + id +
-                '}';
+        return new StringJoiner(", ", RestaurantTo.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .toString();
     }
 }
 
