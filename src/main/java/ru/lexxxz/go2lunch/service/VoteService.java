@@ -43,9 +43,4 @@ public class VoteService {
             throw new OutOfTimeException("Impossible to change your vote after 11-00");
         }).orElse(new Vote(LocalDate.now(), userRepository.get(authUserId), restaurantRepository.getOne(restId))));
     }
-
-    int countVotes(Integer restaurantId) {
-        return voteRepository.countAllByRestaurantId(restaurantId);
-    }
-
 }

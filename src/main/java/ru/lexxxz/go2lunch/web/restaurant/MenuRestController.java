@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.lexxxz.go2lunch.model.Dish;
 import ru.lexxxz.go2lunch.model.Menu;
 import ru.lexxxz.go2lunch.service.MenuService;
 
@@ -33,10 +32,6 @@ public class MenuRestController {
     public List<Menu> getAll(@PathVariable(name = "id") int restaurantId){
         log.info("Request to: " + MENU_URL);
         return menuService.getAll(restaurantId);  }
-
-    @GetMapping(value = "/todaydishes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getDishesForToday(@PathVariable(name = "id") int restaurantId){
-        return menuService.getTodayMenuDishes(restaurantId);  }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu, @PathVariable(name = "id") int restaurantId) {

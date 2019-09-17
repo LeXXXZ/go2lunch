@@ -14,9 +14,16 @@ import java.util.Optional;
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Integer> {
 
-    List<Dish> getAllByRestaurant_Id(int menuId);
+ /*   List<Dish> findAllByRestaurant_Id(int restId);
 
+    @Query("SELECT d FROM Dish d JOIN Menu m WHERE m.id=:m_id ORDER BY d.price")
+    List<Dish> findDishesByMenuIdOrderByPrice(@Param("m_id") int menuId);
+List<Dish> findByMenus_IdOrderByPrice(Menu menu);
+  */
     Optional<Dish> findDishById(int dishId);
+
+//    @Query("SELECT m.dishes FROM Menu m WHERE m.id=:id")
+    List<Dish> findAllByMenus_Id(@Param("id") int id);
 
     List<Dish> findAllByRestaurant_IdOrderByPrice(int restId);
 

@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.lexxxz.go2lunch.model.Dish;
 import ru.lexxxz.go2lunch.model.Menu;
 import ru.lexxxz.go2lunch.repository.jpa.DishRepository;
 import ru.lexxxz.go2lunch.repository.jpa.MenuRepository;
 import ru.lexxxz.go2lunch.repository.jpa.RestaurantRepository;
+import ru.lexxxz.go2lunch.to.MenuTo;
 import ru.lexxxz.go2lunch.util.exception.IllegalRequestDataException;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
@@ -33,17 +33,6 @@ public class MenuService {
         this.restaurantRepository = restaurantRepository;
         this.menuRepository = menuRepository;
         this.dishRepository = dishRepository;
-    }
-
-    public List<Dish> getDayMenuDishes(LocalDate date, int restaurantId) {
-        checkNotFoundRestaurant(restaurantId);
-        Integer dayMenuId = menuRepository.findMenuIdByRestaurantIdAndDate(restaurantId, date);
-        log.info("Dishes for the menu @{} for the restaurant with id: {} ", date, restaurantId);
-        return dishRepository.getAllByRestaurant_Id(restaurantId);
-    }
-
-    public List<Dish> getTodayMenuDishes(int restaurantId) {
-        return getDayMenuDishes(LocalDate.now(), restaurantId);
     }
 
     public List<Menu> getAll(int restaurantId) {
@@ -80,5 +69,14 @@ public class MenuService {
 
     private void checkNotFoundRestaurant(int restaurantId) {
         checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
+    }
+
+    @Transactional
+    public List<MenuTo> getTodayMenus() {
+        log.info("Get menus for {}", LocalDate.now());
+       List<MenuTo> todayMenus = menuRepository.getDayMenus(LocalDate.now());
+        log.info("Add dishes for menus");
+        todayMenus.forEach(m -> m.setDishes(dishRepository.findAllByMenus_Id(m.getId())));
+       return todayMenus;
     }
 }

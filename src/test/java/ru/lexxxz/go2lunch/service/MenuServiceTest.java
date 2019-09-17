@@ -19,11 +19,6 @@ class MenuServiceTest extends AbstractServiceTest{
     protected MenuService menuService;
 
     @Test
-    void getTodayMenuDishes() {
-        assertThat(menuService.getDayMenuDishes(LocalDate.now(), REST1_ID)).isEqualTo(List.of());
-    }
-
-    @Test
     void getAllSorted() {
         List<Menu> all = menuService.getAll(REST1_ID);
         assertThat(all).usingElementComparatorIgnoringFields("dishes", "restaurant").isEqualTo(List.of(MENU2_OF_REST_1, MENU1_OF_REST_1));

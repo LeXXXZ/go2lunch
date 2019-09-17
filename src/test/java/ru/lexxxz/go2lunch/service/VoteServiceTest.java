@@ -25,9 +25,4 @@ class VoteServiceTest extends AbstractServiceTest {
         Vote todayVote = voteService.vote(REST1_ID,USER_ID);
         assertThat(voteService.isVoted(REST1_ID, USER_ID)).isTrue();
     }
-
-    @Test
-    void countVotes() {
-        assertThat(voteService.countVotes(REST1_ID)).isEqualTo(3);
-    }
 }
