@@ -12,11 +12,10 @@
 #### delete User Profile
 `curl -s -v -X DELETE http://localhost:8080/go2lunch/api/v1.0/profile/  --user user@yandex.ru:password`
 
-#### get All Restaurants with votes
-`curl -s http://localhost:8080/go2lunch/api/v1.0/profile/restaurants --user user@yandex.ru:password`
-#### check restaurant 100003 is voted
-`curl -s http://localhost:8080/go2lunch/api/v1.0/profile/restaurants/100003/vote --user user@yandex.ru:password`
-#### get Restaurant not found
-`curl -s -v http://localhost:8080/go2lunch/api/v1.0/profile/restaurants/404/vote --user user@yandex.ru:password`
-#### vote for Restaurant 100003
-`curl -s -X POST -d '{}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/go2lunch/api/v1.0/profile/restaurants/100003/vote --user user@yandex.ru:password`
+#### Working with votes
+#### check restaurant 100010 is voted
+`curl -s http://localhost:8080/go2lunch/api/v1.0/profile/vote/100010 --user user@yandex.ru:password`
+#### vote Restaurant not found
+`curl -s -v http://localhost:8080/go2lunch/api/v1.0/profile/vote/404 --user user@yandex.ru:password`
+#### vote for Restaurant 100010
+`curl -s -X POST -d '{}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/go2lunch/api/v1.0/profile/vote --user user@yandex.ru:password`
