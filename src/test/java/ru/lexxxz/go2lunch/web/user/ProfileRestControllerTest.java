@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.lexxxz.go2lunch.TestUtil.readFromJson;
+import static ru.lexxxz.go2lunch.TestUtil.userHttpBasic;
 import static ru.lexxxz.go2lunch.UserTestData.*;
 import static ru.lexxxz.go2lunch.web.user.ProfileRestController.REST_URL;
 
@@ -23,7 +24,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL).with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(USER))
@@ -31,8 +32,14 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getUnAuth() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void delete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL))
+        mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL).with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
         assertMatch(userService.getAll(), ADMIN);
     }
@@ -42,8 +49,8 @@ class ProfileRestControllerTest extends AbstractControllerTest {
         UserTo createdTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
 
         ResultActions action = mockMvc.perform(MockMvcRequestBuilders.post(REST_URL + "/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(createdTo)))
+                                                                     .contentType(MediaType.APPLICATION_JSON)
+                                                                     .content(JsonUtil.writeValue(createdTo)))
                 .andDo(print())
                 .andExpect(status().isCreated());
         User returned = readFromJson(action, User.class);
@@ -58,8 +65,11 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL)
+                                              .contentType(MediaType.APPLICATION_JSON)
+                                              .content(JsonUtil.writeValue(updatedTo))
+                                              .with(userHttpBasic(USER))
+        )
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
@@ -70,8 +80,10 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     void updateInvalid() throws Exception {
         UserTo updatedTo = new UserTo(null, null, "email", null);
 
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL)
+                                              .contentType(MediaType.APPLICATION_JSON)
+                                              .content(JsonUtil.writeValue(updatedTo))
+                                              .with(userHttpBasic(USER)))
                 .andExpect(status().isInternalServerError())
                 .andDo(print());
     }
@@ -81,8 +93,10 @@ class ProfileRestControllerTest extends AbstractControllerTest {
     void updateDuplicate() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "admin@gmail.com", "newPassword");
 
-        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+        mockMvc.perform(MockMvcRequestBuilders.put(REST_URL)
+                                              .contentType(MediaType.APPLICATION_JSON)
+                                              .content(JsonUtil.writeValue(updatedTo))
+                                              .with(userHttpBasic(USER)))
                 .andExpect(status().isInternalServerError())
                 .andDo(print());
     }

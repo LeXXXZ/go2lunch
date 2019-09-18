@@ -61,7 +61,7 @@ CREATE TABLE votes
     date             DATE DEFAULT today() NOT NULL,
     user_id          INTEGER,
     rest_id          INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES USERS (id),
+    FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE SET NULL ,
     FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX votes_unique_userid_date_idx
