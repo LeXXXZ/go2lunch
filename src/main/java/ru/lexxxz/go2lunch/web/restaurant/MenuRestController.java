@@ -23,7 +23,7 @@ import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNew;
 public class MenuRestController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public static final String MENU_URL = "/api/v1.0/restaurants/{id}/menu";
+    public static final String MENU_URL = "/api/v1.0/admin/restaurants/{id}/menu";
 
     @Autowired
     protected MenuService menuService;

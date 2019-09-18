@@ -15,5 +15,15 @@
 #### update Restaurant
 `curl -s -X PUT -d '{"id":100010,"name":"BurgerKing"}' -H 'Content-Type: application/json' http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010 --user admin@gmail.com:admin`
 
+## Working with Menus
+#### get All Menus of Restaurant 100010
+`curl -s http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/menu --user admin@gmail.com:admin`
+
+## Working with Dishes
+#### get All Dishes of Restaurant 100010
+`curl -s http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/dishes/ --user admin@gmail.com:admin`
+
+
+
 ### validate with Error
 `curl -s -X PUT -d '{"id":"404", "name":"BurgerKing"}' -H 'Content-Type: application/json' http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010 --user admin@gmail.com:admin`

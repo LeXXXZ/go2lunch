@@ -22,21 +22,21 @@ import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNew;
 public class DishRestController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    public static final String MENU_URL = "/api/v1.0/dishes/{menuId}";
+    public static final String MENU_URL = "/api/v1.0/admin/restaurants/{id}/dishes/";
 
     @Autowired
     protected DishService dishService;
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> getAllDishesForMenu(@PathVariable int menuId){
-        return dishService.getAll(menuId);
+    public List<Dish> getAllDishesForRest(@PathVariable(name = "id") int restId){
+        return dishService.getAll(restId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable int menuId) {
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable(name = "id") int restId) {
         checkNew(dish);
-        log.info("Create {} for menu id: {}", dish, menuId);
-        Dish created = dishService.create(dish, menuId);
+        log.info("Create {} for restaurant id: {}", dish, restId);
+        Dish created = dishService.create(dish, restId);
 
         String url = MENU_URL + "/{dishId}";
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -47,8 +47,8 @@ public class DishRestController {
 
     @PutMapping(value = "/{dishId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Dish dish, @PathVariable int menuId, @PathVariable int dishId) {
-        dishService.update(dish, menuId, dishId);
+    public void update(@Valid @RequestBody Dish dish, @PathVariable(name = "id") int restId, @PathVariable int dishId) {
+        dishService.update(dish, restId, dishId);
     }
 
 }
