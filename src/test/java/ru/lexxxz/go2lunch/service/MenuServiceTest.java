@@ -39,16 +39,16 @@ class MenuServiceTest extends AbstractServiceTest{
     @Test
     void update() {
         Menu updated = new Menu(MENU1_OF_REST_1.getId(), DATE_1);
-        updated.setDate(LocalDate.now());
+        updated.setDate(LocalDate.now().plusDays(1));
         menuService.update(updated, REST1_ID, DATE_1);
-        assertThat(menuService.get(LocalDate.now(), REST1_ID)).isEqualToIgnoringGivenFields(updated, "dishes", "restaurant");
+        assertThat(menuService.get(LocalDate.now().plusDays(1), REST1_ID)).isEqualToIgnoringGivenFields(updated, "dishes", "restaurant");
 
     }
 
     @Test
     void create() {
-        Menu newMenu = new Menu(null, LocalDate.now());
-        Menu createdMenu = menuService.create(new Menu(LocalDate.now()), REST1_ID);
+        Menu newMenu = new Menu(null, LocalDate.now().plusDays(1));
+        Menu createdMenu = menuService.create(new Menu(LocalDate.now().plusDays(1)), REST1_ID);
         newMenu.setId(createdMenu.getId());
         assertThat(createdMenu).isEqualToIgnoringGivenFields(newMenu, "dishes", "restaurant");
     }
