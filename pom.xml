@@ -20,6 +20,8 @@
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
 
+        <!--DB-->
+        <hsqldb.version>2.5.0</hsqldb.version>
         <!--Web-->
         <tomcat.version>9.0.22</tomcat.version>
         <jackson-json.version>2.9.9</jackson-json.version>
@@ -62,6 +64,48 @@
                 </configuration>
             </plugin>
 
+            <!--  http://stackoverflow.com/questions/4305935/is-it-possible-to-supply-tomcat6s-context-xml-file-via-the-maven-cargo-plugin#4417945 -->
+            <!-- https://codehaus-cargo.github.io/cargo/Tomcat+9.x.html -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <version>1.7.5</version>
+                <configuration>
+                    <container>
+                        <containerId>tomcat9x</containerId>
+                        <systemProperties>
+                            <file.encoding>UTF-8</file.encoding>
+                            <spring.profiles.active>tomcat</spring.profiles.active>
+                        </systemProperties>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.hsqldb</groupId>
+                                <artifactId>hsqldb</artifactId>
+<!--                                <version>2.5.0</version>-->
+                            </dependency>
+                        </dependencies>
+                    </container>
+                    <configuration>
+                        <configfiles>
+                            <configfile>
+                                <file>src/main/resources/tomcat/context.xml</file>
+                                <todir>conf/Catalina/localhost/</todir>
+                                <tofile>context.xml.default</tofile>
+                            </configfile>
+                        </configfiles>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>ru.lexxxz</groupId>
+                            <artifactId>go2lunch</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>${project.build.finalName}</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -144,7 +188,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.5.0</version>
+            <version>${hsqldb.version}</version>
         </dependency>
 
         <!--- ORM -->

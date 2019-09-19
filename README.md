@@ -21,6 +21,9 @@ Each restaurant provides new menu each day.
 * ##### <a href="https://github.com/LeXXXZ/go2lunch/blob/master/API%20v1.0/curl_restaurant_administration.md" target=_blank>Restaurants administration</a>
 * ##### <a href="https://github.com/LeXXXZ/go2lunch/blob/master/API%20v1.0/curl_users_administration.md" target=_blank>Users administration </a>
 
+### Launching app
+`mvn clean package -DskipTests=true org.codehaus.cargo:cargo-maven2-plugin:1.7.5:run`
+
 #### After deploying to Tomcat at http://localhost:8080/go2lunch
 Today restaurants menus could be requested without authentication at:
 http://localhost:8080/go2lunch/api/v1.0/today-menu
