@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Dish;
 import ru.lexxxz.go2lunch.repository.jpa.DishRepository;
 import ru.lexxxz.go2lunch.repository.jpa.RestaurantRepository;
+import ru.lexxxz.go2lunch.to.DishTo;
+import ru.lexxxz.go2lunch.util.DishUtil;
 import ru.lexxxz.go2lunch.util.exception.IllegalRequestDataException;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
@@ -43,31 +45,34 @@ public class DishService {
     }
 
     @Transactional
-    public Dish create(Dish dish, int restId) {
-        assertNotNullEntity(dish);
-        if (dishRepository.existsByNameAndRestaurantId(dish.getName(), restId)) {
-            throw new IllegalRequestDataException("Dish " + dish.getName() + " already exists");
+    public Dish create(DishTo dishTo, int restId) {
+        assertNotNullEntity(dishTo);
+        if (dishRepository.existsByNameAndRestaurantId(dishTo.getName(), restId)) {
+            throw new IllegalRequestDataException("Dish " + dishTo.getName() + " already exists");
         }
-        dish.setRestaurant(restRepository.getOne(restId));
-        return dishRepository.save(dish);
+        Dish created = DishUtil.createNewFromTo(dishTo);
+        created.setRestaurant(restRepository.getOne(restId));
+        return dishRepository.save(created);
     }
 
     @Transactional
-    public void update(Dish dish, int restId, int dishId) {
-        assertNotNullEntity(dish);
-        if (dishRepository.findDishById(dishId).orElse(null) != null) {
-            dish.setRestaurant(restRepository.getOne(restId));
-            dishRepository.save(dish);
-        } else throw new IllegalRequestDataException("No dish with id: " + dish + " for restaurant with id: " + restId);
+    public void update(DishTo dishTo, int restId, int dishId) {
+        assertNotNullEntity(dishTo);
+        Dish dish = get(dishId, restId);
+        checkNotFoundRest(restId);
+        checkNotFoundWithId(dishRepository.save(DishUtil.updateFromTo(dish, dishTo)), dish.getId());
     }
 
     private void checkNotFoundRest(int restId) {
         checkNotFoundWithId(restRepository.existsById(restId), restId);
     }
 
-    public List<Dish> getAll(int restId) {
+    public List<DishTo> getAll(int restId) {
         checkNotFoundRest(restId);
-        return dishRepository.findAllByRestaurant_IdOrderByPrice(restId);
+        return dishRepository.findAllByRestaurant_IdOrderByName(restId);
     }
 
+    public DishTo getTo(int dishId, int restId) {
+        return DishUtil.asTo(get(dishId,restId));
+    }
 }

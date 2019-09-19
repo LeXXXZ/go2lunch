@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Dish;
+import ru.lexxxz.go2lunch.to.DishTo;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,18 +15,14 @@ import java.util.Optional;
 @Repository
 public interface DishRepository extends JpaRepository<Dish, Integer> {
 
- /*   List<Dish> findAllByRestaurant_Id(int restId);
-
-    @Query("SELECT d FROM Dish d JOIN Menu m WHERE m.id=:m_id ORDER BY d.price")
-    List<Dish> findDishesByMenuIdOrderByPrice(@Param("m_id") int menuId);
-List<Dish> findByMenus_IdOrderByPrice(Menu menu);
-  */
     Optional<Dish> findDishById(int dishId);
 
 //    @Query("SELECT m.dishes FROM Menu m WHERE m.id=:id")
     List<Dish> findAllByMenus_Id(@Param("id") int id);
 
-    List<Dish> findAllByRestaurant_IdOrderByPrice(int restId);
+    @Query("SELECT NEW ru.lexxxz.go2lunch.to.DishTo(d.id, d.name, d.price) " +
+            "FROM Dish d join d.restaurant r where r.id = :id ORDER BY d.name")
+    List<DishTo> findAllByRestaurant_IdOrderByName(@Param("id") int restId);
 
     @Transactional
     @Modifying
@@ -33,4 +30,6 @@ List<Dish> findByMenus_IdOrderByPrice(Menu menu);
     int delete(@Param("id") int dishId);
 
     boolean existsByNameAndRestaurantId(String dishName, int restaurantId);
+
+    Optional<Dish> findByRestaurant_Id(int restId);
 }

@@ -22,6 +22,12 @@
 ## Working with Dishes
 #### get All Dishes of Restaurant 100010
 `curl -s http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/dishes/ --user admin@gmail.com:admin`
+#### get Dish 100030 of Restaurant 100010
+`curl -s http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/dishes/100030 --user admin@gmail.com:admin`
+#### update Dish 100030 of Restaurant 100010
+`curl -s -X PUT -d '{"id":100030,"name":"updatedBigMac","price":2222}' -H 'Content-Type: application/json' http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/dishes/100030 --user admin@gmail.com:admin`
+#### create Dish of Restaurant 100010
+`curl -s -X POST -d '{"id":null,"name":"Cola","price":1111}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/go2lunch/api/v1.0/admin/restaurants/100010/dishes --user admin@gmail.com:admin`
 
 
 

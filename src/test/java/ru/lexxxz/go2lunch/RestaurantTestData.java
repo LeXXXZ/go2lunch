@@ -26,8 +26,10 @@ public class RestaurantTestData {
     public static final Menu MENU1_OF_REST_1 = new Menu(START_SEQ + 21  , DATE_1);
     public static final Menu MENU2_OF_REST_1 = new Menu(START_SEQ + 23 , DATE_2);
 
-    public static final Dish DISH_1_FOR_MENU_100021 = new Dish(START_SEQ + 31,"CheeseBurger", 1000);
-    public static final Dish DISH_2_FOR_MENU_100023 = new Dish(START_SEQ + 30,"BigMac", 2000);
+    public static final Dish DISH_1_FOR_MENU_100021 = new Dish(START_SEQ + 30,"BigMac", 2000);
+    public static final Dish DISH_2_FOR_MENU_100021 = new Dish(START_SEQ + 31,"CheeseBurger", 1000);
+    public static final Dish DISH_3_FOR_MENU_100023 = new Dish(START_SEQ + 32,"Fries", 1000);
+    public static final Dish DISH_4_FOR_MENU_100023 = new Dish(START_SEQ + 33,"BigMac2", 1000);
 
-    public static final List<Dish> DISHES_FOR_MENU_100021 = List.of(DISH_1_FOR_MENU_100021 ,DISH_2_FOR_MENU_100023 );
+    public static final List<Dish> DISHES_FOR_MENU_100021 = List.of(DISH_1_FOR_MENU_100021 ,DISH_2_FOR_MENU_100021);
 }
