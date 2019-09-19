@@ -10,6 +10,7 @@
         <http-basic/>
         <intercept-url pattern="/api/v1.0/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/api/v1.0/profile/register" access="isAnonymous()"/>
+        <intercept-url pattern="/api/v1.0/profile/**" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/api/v1.0/today-menu" access="permitAll()"/>
         <intercept-url pattern="/api/v1.0/**" access="isAuthenticated()"/>
         <csrf disabled="true"/>
