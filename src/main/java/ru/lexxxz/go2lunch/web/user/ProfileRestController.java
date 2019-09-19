@@ -9,10 +9,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.service.RestaurantService;
 import ru.lexxxz.go2lunch.to.UserTo;
+import ru.lexxxz.go2lunch.to.VoteTo;
 import ru.lexxxz.go2lunch.web.SecurityUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)
@@ -59,10 +61,16 @@ public class ProfileRestController extends AbstractUserController {
         return voteService.isVoted(id, SecurityUtil.authUserId());  }
 
         //TODO Add check for too late vote (after 16:00)
-        @PostMapping(value = "/vote/{id}")
+        @PutMapping(value = "/vote/{id}")
         @ResponseStatus(value = HttpStatus.OK)
         public ResponseEntity vote (@PathVariable int id) {
             voteService.vote(id, SecurityUtil.authUserId());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
+
+    @GetMapping(value = "/vote", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<VoteTo> getAllVotes(){
+        return voteService.getAll(SecurityUtil.authUserId());
+    }
+
 }
