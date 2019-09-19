@@ -3,7 +3,7 @@ Go2Lunch Project
 
 A voting system for deciding where to have lunch.
 
-REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) **without frontend**.
+REST API using Hibernate, Spring/Data-JPA/MVC/Security **without frontend**.
 
  * 2 types of users: admin and regular users
  * Admin can input a restaurant and it's lunch menu of the day (2-5 items usually, just a dish name and price)
@@ -21,12 +21,12 @@ Each restaurant provides new menu each day.
 * ##### <a href="https://github.com/LeXXXZ/go2lunch/blob/master/API%20v1.0/curl_restaurant_administration.md" target=_blank>Restaurants administration</a>
 * ##### <a href="https://github.com/LeXXXZ/go2lunch/blob/master/API%20v1.0/curl_users_administration.md" target=_blank>Users administration </a>
 
-####After deploying to Tomcat at http://localhost:8080/go2lunch
+#### After deploying to Tomcat at http://localhost:8080/go2lunch
 Today restaurants menus could be requested without authentication at:
 http://localhost:8080/go2lunch/api/v1.0/today-menu
 
 For all other actions authentication is necessary:
 * for Admin role 
-#####admin@gmail.com : admin
+##### admin@gmail.com : admin
 * for User role 
-#####user@yandex.ru : password
+##### user@yandex.ru : password
