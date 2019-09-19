@@ -97,7 +97,7 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                                               .contentType(MediaType.APPLICATION_JSON)
                                               .content(JsonUtil.writeValue(updatedTo))
                                               .with(userHttpBasic(USER)))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isConflict())
                 .andDo(print());
     }
 }

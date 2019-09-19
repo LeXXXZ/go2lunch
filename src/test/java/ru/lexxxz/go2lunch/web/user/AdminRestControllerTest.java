@@ -66,7 +66,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     void deleteNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete(REST_URL + 1)
                                               .with(userHttpBasic(ADMIN)))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isUnprocessableEntity())
                 .andDo(print());
     }
 
@@ -151,7 +151,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                                               .contentType(MediaType.APPLICATION_JSON)
                                               .content(jsonWithPassword(updated, "password"))
                                               .with(userHttpBasic(ADMIN)))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isConflict())
                 .andDo(print());
     }
 
@@ -163,7 +163,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
                                               .contentType(MediaType.APPLICATION_JSON)
                                               .content(jsonWithPassword(expected, "newPass"))
                                               .with(userHttpBasic(ADMIN)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isConflict());
     }
 
     @Test
