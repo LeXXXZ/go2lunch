@@ -54,13 +54,10 @@ public class ProfileRestController extends AbstractUserController {
 
     //    User actions with restaurants votes
 
-        //TODO Change response to RestaurantTo with vote
-        //TODO add notfoundcheck for restaurant id
     @GetMapping(value = "/vote/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Boolean isRestaurantVoted(@PathVariable int id){
         return voteService.isVoted(id, SecurityUtil.authUserId());  }
 
-        //TODO Add check for too late vote (after 16:00)
         @PutMapping(value = "/vote/{id}")
         @ResponseStatus(value = HttpStatus.OK)
         public ResponseEntity vote (@PathVariable int id) {
