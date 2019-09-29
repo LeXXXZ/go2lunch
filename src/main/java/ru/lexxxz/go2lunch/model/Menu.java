@@ -1,51 +1,48 @@
 package ru.lexxxz.go2lunch.model;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.StringJoiner;
 
 @Entity
 @Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = "date", name = "menus_unique_date_idx")})
-public class Menu extends AbstractBaseEntity {
+public class Menu extends AbstractNamedEntity {
+
+    @Column(name = "price", nullable = false)
+    @Range(min = 10, max = 5000)
+    @NotNull
+    private Integer price;
 
     @Column(name = "date", nullable = false, columnDefinition = "DATE DEFAULT today()")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
-    public Menu(){
-    }
-
-    public Menu(@NotNull LocalDate date) {
-        this(null, date);
-    }
-
-    public Menu(Integer id, LocalDate date) {
-        super(id);
-        this.date = date;
-    }
-
-    public Menu(Menu menu) {
-        this.date = menu.getDate();
-        this.dishes = menu.getDishes();
-        this.restaurant = menu.getRestaurant();
-    }
-
-    @ManyToMany
-    @JoinTable(name="menu_dish",
-            joinColumns = @JoinColumn(name="dish_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="menu_id", referencedColumnName="id")
-    )
-    @OrderBy("price ASC")
-    private List<Dish> dishes;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     private Restaurant restaurant;
+
+    public Menu(){
+    }
+
+    public Menu(Integer id, String name, @Range(min = 10, max = 5000) @NotNull Integer price, @NotNull LocalDate date, Restaurant restaurant) {
+        super(id, name);
+        this.price = price;
+        this.date = date;
+        this.restaurant = restaurant;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     public LocalDate getDate() {
         return date;
@@ -60,18 +57,15 @@ public class Menu extends AbstractBaseEntity {
     public Restaurant getRestaurant() {
         return restaurant;
     }
-    public List<Dish> getDishes() {
-        return dishes;
-    }
-    public void setDishes(List<Dish> dishes) {
-        this.dishes = dishes;
-    }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Menu.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
+                .add("price=" + price)
                 .add("date=" + date)
+                .add("restaurant=" + restaurant.getId())
+                .add("name='" + name + "'")
+                .add("id=" + id)
                 .toString();
     }
 }
