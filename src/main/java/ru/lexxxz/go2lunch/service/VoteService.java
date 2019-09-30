@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Vote;
+import ru.lexxxz.go2lunch.repository.RestaurantRepository;
 import ru.lexxxz.go2lunch.repository.UserRepository;
-import ru.lexxxz.go2lunch.repository.jpa.RestaurantRepository;
-import ru.lexxxz.go2lunch.repository.jpa.VoteRepository;
+import ru.lexxxz.go2lunch.repository.VoteRepository;
 import ru.lexxxz.go2lunch.to.VoteTo;
 import ru.lexxxz.go2lunch.util.exception.OutOfTimeException;
 
@@ -45,7 +45,7 @@ private static final Logger log = LoggerFactory.getLogger(VoteService.class);
                 return v;
             }
             throw new OutOfTimeException("Impossible to change your vote after 11-00");
-        }).orElse(new Vote(LocalDate.now(), userRepository.get(authUserId), restaurantRepository.getOne(restId))));
+        }).orElse(new Vote(LocalDate.now(), userRepository.findById(authUserId), restaurantRepository.getOne(restId))));
     }
 
     public List<VoteTo> getAll(int authUserId) {

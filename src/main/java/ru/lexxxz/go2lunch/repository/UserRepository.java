@@ -1,21 +1,37 @@
 package ru.lexxxz.go2lunch.repository;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-    // null if not found, when updated
-    User save(User user);
+@Repository
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository<User, Integer> {
 
-    // false if not found
-    boolean delete(int id);
+    Sort SORT_NAME_EMAIL = new Sort(Sort.Direction.ASC, "name", "email");
 
-    // null if not found
-    User get(int id);
+    @Transactional
+    @Modifying
+    int deleteById(@Param("id") int id);
 
-    // null if not found
+    @Transactional
+    @Modifying
+    default boolean delete(int id){
+        return  deleteById(id) != 0;
+    }
+
+    Optional<User> findById(int id);
+
     User getByEmail(String email);
 
-    List<User> getAll();
+    default List<User> getAll(){
+        return findAll(SORT_NAME_EMAIL);
+    };
 }

@@ -1,4 +1,4 @@
-package ru.lexxxz.go2lunch.repository.jpa;
+package ru.lexxxz.go2lunch.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
