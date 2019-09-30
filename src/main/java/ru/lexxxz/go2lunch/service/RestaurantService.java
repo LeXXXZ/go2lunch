@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Restaurant;
 import ru.lexxxz.go2lunch.repository.RestaurantRepository;
-import ru.lexxxz.go2lunch.repository.VoteRepository;
 import ru.lexxxz.go2lunch.to.RestaurantTo;
 import ru.lexxxz.go2lunch.util.RestaurantUtil;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
@@ -24,12 +23,10 @@ public class RestaurantService {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final RestaurantRepository restaurantRepository;
-    private final VoteRepository voteRepository;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository, VoteRepository voteRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.voteRepository = voteRepository;
     }
 
     public List<Restaurant> getAll() {

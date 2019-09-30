@@ -19,7 +19,9 @@ import java.util.Optional;
 
 @Service("voteService")
 public class VoteService {
-private static final Logger log = LoggerFactory.getLogger(VoteService.class);
+    private static final Logger log = LoggerFactory.getLogger(VoteService.class);
+    public static final LocalTime EXPIRATION_TIME = LocalTime.of(11, 0, 0);
+
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -40,12 +42,18 @@ private static final Logger log = LoggerFactory.getLogger(VoteService.class);
         Optional<Vote> vote = voteRepository.findByUserIdAndDate(authUserId, LocalDate.now());
 
         return voteRepository.save(vote.map(v -> {
-            if (LocalTime.now().isBefore(LocalTime.of(11, 0, 0))) {
-                v.setRestaurant(restaurantRepository.getOne(restId));
-                return v;
-            }
-            throw new OutOfTimeException("Impossible to change your vote after 11-00");
-        }).orElse(new Vote(LocalDate.now(), userRepository.findById(authUserId), restaurantRepository.getOne(restId))));
+                                                if (LocalTime.now().isBefore(EXPIRATION_TIME)) {
+                                                    v.setRestaurant(restaurantRepository.getOne(restId));
+                                                    return v;
+                                                }
+                                                else {
+                                                    throw new OutOfTimeException("Impossible to change your vote after "
+                                                    + EXPIRATION_TIME.toString());
+                                                }
+                                                })
+                                        .orElse(new Vote(LocalDate.now(),
+                                                        userRepository.findById(authUserId).orElseThrow(),
+                                                        restaurantRepository.getOne(restId))));
     }
 
     public List<VoteTo> getAll(int authUserId) {

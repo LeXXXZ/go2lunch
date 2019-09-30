@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User get(int id) throws NotFoundException {
-        return checkNotFoundWithId(repository.findById(id), id);
+        return checkNotFoundWithId(repository.findById(id).orElse(null), id);
     }
 
     public User getByEmail(String email) throws NotFoundException {
@@ -63,6 +63,7 @@ public class UserService implements UserDetailsService {
         checkNotFoundWithId(repository.save(UserUtil.updateFromTo(user, userTo)), user.getId());
     }
 
+    @Transactional
     public void enable(int id, boolean enabled) {
         User user = get(id);
         user.setEnabled(enabled);

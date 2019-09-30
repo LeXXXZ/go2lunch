@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Menu;
-import ru.lexxxz.go2lunch.repository.DishRepository;
 import ru.lexxxz.go2lunch.repository.MenuRepository;
 import ru.lexxxz.go2lunch.repository.RestaurantRepository;
 import ru.lexxxz.go2lunch.to.MenuTo;
@@ -26,13 +25,11 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
     private final RestaurantRepository restaurantRepository;
-    private final DishRepository dishRepository;
 
     @Autowired
-    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository, DishRepository dishRepository) {
+    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
         this.menuRepository = menuRepository;
-        this.dishRepository = dishRepository;
     }
 
     public List<Menu> getAll(int restaurantId) {
@@ -40,18 +37,26 @@ public class MenuService {
         return menuRepository.findAllByRestaurantIdOrderByDateDesc(restaurantId);
     }
 
-    public Menu get(LocalDate date, int restaurantId) {
-        return menuRepository.findByRestaurantIdAndDate(restaurantId, date).orElseThrow(() -> new NotFoundException("No such menu"));
+    public List<Menu> getAllByDate(LocalDate date, int restaurantId) {
+        checkNotFoundRestaurant(restaurantId);
+        return menuRepository.findAllByRestaurantIdAndDate(restaurantId, date);
+    }
+
+    public Menu get(int menuId) {
+        return menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException("No such menu"));
     }
 
     @Transactional
     public Menu create(Menu menu, int restaurantId) {
         assertNotNullEntity(menu);
+        if (menu.getRestaurant() != null && menu.getRestaurant().getId() != restaurantId) {
+            throw new IllegalRequestDataException("Menu couldn't belong to restaurant: " + restaurantId);
+        }
         if (menu.getDate() == null) {
             menu.setDate(LocalDate.now());
         }
 
-        if (menuRepository.findByRestaurantIdAndDate(restaurantId , menu.getDate()).orElse(null) == null) {
+        if (!menuRepository.existsByRestaurantIdAndDateAndName(restaurantId , menu.getDate(), menu.getName())) {
             menu.setRestaurant(restaurantRepository.getOne(restaurantId));
             return menuRepository.save(menu);
         }
@@ -59,24 +64,20 @@ public class MenuService {
     }
 
     @Transactional
-    public void update(Menu menu, int restaurantId, LocalDate date) {
+    public void update(Menu menu, int restaurantId, int id) {
         assertNotNullEntity(menu);
-        if (menuRepository.findByRestaurantIdAndDate(restaurantId , date).orElse(null)  != null){
-        menu.setRestaurant(restaurantRepository.getOne(restaurantId));
+        if (menuRepository.existsByIdAndRestaurantId(id, restaurantId)) {
         menuRepository.save(menu);}
-        else throw new IllegalRequestDataException("No menu for restaurant with id: " + restaurantId + " @" + date.toString());
+        else throw new IllegalRequestDataException("No menu with id: " + id + " for restaurant id: " + restaurantId);
     }
 
     private void checkNotFoundRestaurant(int restaurantId) {
         checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
     }
 
-    @Transactional
     public List<MenuTo> getTodayMenus() {
         log.info("Get menus for {}", LocalDate.now());
        List<MenuTo> todayMenus = menuRepository.getDayMenus(LocalDate.now());
-        log.info("Add dishes for menus");
-        todayMenus.forEach(m -> m.setDishes(dishRepository.findAllByMenus_Id(m.getId())));
        return todayMenus;
     }
 }
