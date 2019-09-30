@@ -8,6 +8,14 @@ import java.util.StringJoiner;
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx")})
 public class Restaurant extends AbstractNamedEntity {
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OrderBy("date DESC")
+    private List<Menu> menus;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    private Collection<Vote> votes;
+
     public Restaurant(){
     }
 
@@ -20,13 +28,6 @@ public class Restaurant extends AbstractNamedEntity {
         this.menus = restaurant.getMenus();
         this.votes = restaurant.getVotes();
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("date DESC")
-    private List<Menu> menus;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    private Collection<Vote> votes;
 
     public List<Menu> getMenus() {
         return menus;

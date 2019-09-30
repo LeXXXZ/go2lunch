@@ -18,6 +18,15 @@ public class Vote extends AbstractBaseEntity{
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "rest_id", nullable = false)
+    private Restaurant restaurant;
+
     protected Vote() {
     }
 
@@ -30,15 +39,6 @@ public class Vote extends AbstractBaseEntity{
     public Vote(@NotNull LocalDate date) {
         this.date = date;
     }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rest_id", nullable = false)
-    private Restaurant restaurant;
 
     public LocalDate getDate() {
         return date;
