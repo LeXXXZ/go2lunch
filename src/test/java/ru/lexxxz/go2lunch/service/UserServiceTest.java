@@ -1,19 +1,23 @@
 package ru.lexxxz.go2lunch.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.lexxxz.go2lunch.UserTestData.ADMIN;
+import static ru.lexxxz.go2lunch.UserTestData.ADMIN_ID;
+import static ru.lexxxz.go2lunch.UserTestData.USER;
+import static ru.lexxxz.go2lunch.UserTestData.USER_ID;
+
+import java.util.Collections;
+import java.util.List;
+import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import ru.lexxxz.go2lunch.model.Role;
 import ru.lexxxz.go2lunch.model.User;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
-
-import javax.validation.ConstraintViolationException;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.lexxxz.go2lunch.UserTestData.*;
 
 class UserServiceTest extends AbstractServiceTest{
 

@@ -1,13 +1,11 @@
 package ru.lexxxz.go2lunch;
 
-import ru.lexxxz.go2lunch.model.Dish;
-import ru.lexxxz.go2lunch.model.Menu;
-import ru.lexxxz.go2lunch.model.Restaurant;
+import static ru.lexxxz.go2lunch.model.AbstractBaseEntity.START_SEQ;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static ru.lexxxz.go2lunch.model.AbstractBaseEntity.START_SEQ;
+import ru.lexxxz.go2lunch.model.Menu;
+import ru.lexxxz.go2lunch.model.Restaurant;
 
 
 public class RestaurantTestData {
@@ -23,13 +21,17 @@ public class RestaurantTestData {
     public static final LocalDate DATE_1 = LocalDate.of(2019, 8, 16);
     public static final LocalDate DATE_2 = LocalDate.now();
 
-    public static final Menu MENU1_OF_REST_1 = new Menu(START_SEQ + 21  , DATE_1);
-    public static final Menu MENU2_OF_REST_1 = new Menu(START_SEQ + 23 , DATE_2);
+    public static final Menu MENU1_OF_REST_1 = new Menu(START_SEQ + 21, "BigMac", 2000 , DATE_1);
+    public static final Menu MENU2_OF_REST_1 = new Menu(START_SEQ + 22, "CheeseBurger", 1000 , DATE_1);
+    public static final Menu MENU3_OF_REST_1 = new Menu(START_SEQ + 23, "Fries", 1000 , DATE_1);
+    public static final Menu MENU4_OF_REST_1 = new Menu(START_SEQ + 26 , "BigMac", 2000, DATE_2);
+    public static final Menu MENU5_OF_REST_1 = new Menu(START_SEQ + 27 , "BigMac2", 1000, DATE_2);
+    public static final Menu MENU6_OF_REST_1 = new Menu(START_SEQ + 28 , "Fries", 1000, DATE_2);
 
-    public static final Dish DISH_1_FOR_MENU_100021 = new Dish(START_SEQ + 30,"BigMac", 2000);
-    public static final Dish DISH_2_FOR_MENU_100021 = new Dish(START_SEQ + 31,"CheeseBurger", 1000);
-    public static final Dish DISH_3_FOR_MENU_100023 = new Dish(START_SEQ + 32,"Fries", 1000);
-    public static final Dish DISH_4_FOR_MENU_100023 = new Dish(START_SEQ + 33,"BigMac2", 1000);
+    public static final List<Menu> MENUS_OF_REST_1 = List.of(MENU4_OF_REST_1 ,MENU5_OF_REST_1, MENU6_OF_REST_1,
+        MENU1_OF_REST_1, MENU2_OF_REST_1, MENU3_OF_REST_1);
 
-    public static final List<Dish> DISHES_FOR_MENU_100021 = List.of(DISH_1_FOR_MENU_100021 ,DISH_2_FOR_MENU_100021);
+    public static Menu getNewMenu() {
+      return new Menu("NewBigMac", 2222 , LocalDate.now().plusDays(1));
+    }
 }

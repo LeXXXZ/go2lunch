@@ -1,5 +1,10 @@
 package ru.lexxxz.go2lunch.service;
 
+import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
+import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Menu;
 import ru.lexxxz.go2lunch.repository.MenuRepository;
 import ru.lexxxz.go2lunch.repository.RestaurantRepository;
-import ru.lexxxz.go2lunch.to.MenuTo;
 import ru.lexxxz.go2lunch.util.exception.IllegalRequestDataException;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
-import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("menuService")
 @Transactional(readOnly = true)
@@ -42,8 +40,8 @@ public class MenuService {
         return menuRepository.findAllByRestaurantIdAndDate(restaurantId, date);
     }
 
-    public Menu get(int menuId) {
-        return menuRepository.findById(menuId).orElseThrow(() -> new NotFoundException("No such menu"));
+    public Menu get(int menuId, int restaurantId) {
+        return menuRepository.findByRestaurantIdAndId(restaurantId, menuId).orElseThrow(() -> new NotFoundException("No such menu"));
     }
 
     @Transactional
@@ -73,11 +71,5 @@ public class MenuService {
 
     private void checkNotFoundRestaurant(int restaurantId) {
         checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
-    }
-
-    public List<MenuTo> getTodayMenus() {
-        log.info("Get menus for {}", LocalDate.now());
-       List<MenuTo> todayMenus = menuRepository.getDayMenus(LocalDate.now());
-       return todayMenus;
     }
 }

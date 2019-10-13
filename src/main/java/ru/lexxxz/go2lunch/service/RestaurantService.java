@@ -1,21 +1,23 @@
 package ru.lexxxz.go2lunch.service;
 
+import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
+import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.lexxxz.go2lunch.model.Menu;
 import ru.lexxxz.go2lunch.model.Restaurant;
+import ru.lexxxz.go2lunch.repository.MenuRepository;
 import ru.lexxxz.go2lunch.repository.RestaurantRepository;
 import ru.lexxxz.go2lunch.to.RestaurantTo;
 import ru.lexxxz.go2lunch.util.RestaurantUtil;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
-
-import java.util.List;
-
-import static ru.lexxxz.go2lunch.util.ValidationUtil.assertNotNullEntity;
-import static ru.lexxxz.go2lunch.util.ValidationUtil.checkNotFoundWithId;
 
 @Service("restaurantService")
 @Transactional(readOnly = true)
@@ -23,10 +25,12 @@ public class RestaurantService {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final RestaurantRepository restaurantRepository;
+    private final MenuRepository menuRepository;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, MenuRepository menuRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.menuRepository = menuRepository;
     }
 
     public List<Restaurant> getAll() {
@@ -63,5 +67,19 @@ public class RestaurantService {
         assertNotNullEntity(restaurantTo);
         log.info("Create rest {}", restaurantTo);
         return restaurantRepository.save(RestaurantUtil.createNewFromTo(restaurantTo));
+    }
+
+    public List<RestaurantTo> getRestsWithTodayMenu(){
+        LocalDate today = LocalDate.now();
+        List<RestaurantTo> todayRestaurants = restaurantRepository.getAllWithTodayMenu(today);
+        List<Menu> todayMenus =  menuRepository.findAllByDate(today);
+        for (Menu m : todayMenus) {
+            for (RestaurantTo restaurantTo : todayRestaurants) {
+                if (m.getRestaurant().getId().equals(restaurantTo.getId()))
+                    restaurantTo.getTodayMenu().add(m);
+            }
+        }
+         return todayRestaurants;
+
     }
 }

@@ -1,12 +1,17 @@
 package ru.lexxxz.go2lunch.model;
 
-import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.StringJoiner;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "menus", uniqueConstraints = {@UniqueConstraint(columnNames = "date", name = "menus_unique_date_idx")})
@@ -29,12 +34,15 @@ public class Menu extends AbstractNamedEntity {
     public Menu(){
     }
 
-    public Menu(Integer id, String name, @Range(min = 10, max = 5000) @NotNull Integer price, @NotNull LocalDate date, Restaurant restaurant) {
+    public Menu(Integer id, String name, Integer price,LocalDate date) {
         super(id, name);
         this.price = price;
         this.date = date;
-        this.restaurant = restaurant;
     }
+
+  public Menu(String name, Integer price, LocalDate date) {
+    this(null, name, price, date);
+  }
 
     public Integer getPrice() {
         return price;
