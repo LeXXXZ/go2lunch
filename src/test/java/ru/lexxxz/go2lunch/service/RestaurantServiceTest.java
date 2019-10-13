@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static ru.lexxxz.go2lunch.RestaurantTestData.KFC;
 import static ru.lexxxz.go2lunch.RestaurantTestData.MACD;
 import static ru.lexxxz.go2lunch.RestaurantTestData.REST1_ID;
+import static ru.lexxxz.go2lunch.RestaurantTestData.TODAYS_MENUS_OF_REST_1;
+import static ru.lexxxz.go2lunch.RestaurantTestData.TODAYS_MENUS_OF_REST_2;
 import static ru.lexxxz.go2lunch.util.RestaurantUtil.asTo;
 
 import java.util.Comparator;
@@ -30,9 +32,14 @@ class RestaurantServiceTest extends AbstractServiceTest{
     @Test
     void todayMenus(){
         List<RestaurantTo> all = restaurantService.getRestsWithTodayMenu();
-        for (RestaurantTo restaurantTo : all) {
-            System.out.println(restaurantTo);
-        }
+        RestaurantTo rest1 = asTo(MACD);
+        TODAYS_MENUS_OF_REST_1.forEach(m1 -> m1.setRestaurant(MACD));
+        rest1.setTodayMenu(TODAYS_MENUS_OF_REST_1);
+        RestaurantTo rest2 = asTo(KFC);
+        TODAYS_MENUS_OF_REST_2.forEach(m2 -> m2.setRestaurant(KFC));
+        rest2.setTodayMenu(TODAYS_MENUS_OF_REST_2);
+        assertThat(all.get(0)).isEqualToIgnoringGivenFields(rest1, "votes");
+        assertThat(all.get(1)).isEqualToIgnoringGivenFields(rest2, "votes");
     }
 
     @Test

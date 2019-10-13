@@ -28,8 +28,17 @@ public class RestaurantTestData {
     public static final Menu MENU5_OF_REST_1 = new Menu(START_SEQ + 27 , "BigMac2", 1000, DATE_2);
     public static final Menu MENU6_OF_REST_1 = new Menu(START_SEQ + 28 , "Fries", 1000, DATE_2);
 
+    public static final Menu MENU1_OF_REST_2 = new Menu(START_SEQ + 24, "Twister", 1000 , DATE_1);
+    public static final Menu MENU2_OF_REST_2 = new Menu(START_SEQ + 25, "BoxMaster", 1000 , DATE_1);
+    public static final Menu MENU3_OF_REST_2 = new Menu(START_SEQ + 29, "Twister2", 1000 , DATE_2);
+    public static final Menu MENU4_OF_REST_2 = new Menu(START_SEQ + 30 , "BoxMaster2", 1000, DATE_2);
+
     public static final List<Menu> MENUS_OF_REST_1 = List.of(MENU4_OF_REST_1 ,MENU5_OF_REST_1, MENU6_OF_REST_1,
         MENU1_OF_REST_1, MENU2_OF_REST_1, MENU3_OF_REST_1);
+
+    public static final List<Menu> TODAYS_MENUS_OF_REST_1 = List.of(MENU4_OF_REST_1 ,MENU5_OF_REST_1, MENU6_OF_REST_1);
+
+    public static final List<Menu> TODAYS_MENUS_OF_REST_2 = List.of(MENU3_OF_REST_2, MENU4_OF_REST_2);
 
     public static Menu getNewMenu() {
       return new Menu("NewBigMac", 2222 , LocalDate.now().plusDays(1));
