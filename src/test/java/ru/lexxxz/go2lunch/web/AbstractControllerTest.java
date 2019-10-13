@@ -1,17 +1,19 @@
 package ru.lexxxz.go2lunch.web;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
+import javax.annotation.PostConstruct;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import ru.lexxxz.go2lunch.repository.JpaUtil;
 import ru.lexxxz.go2lunch.service.UserService;
-
-import javax.annotation.PostConstruct;
-
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-app.xml",
@@ -31,6 +33,12 @@ abstract public class AbstractControllerTest {
     protected MockMvc mockMvc;
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired(required = false)
+    private JpaUtil jpaUtil;
+
+    @Autowired
     protected UserService userService;
 
     @Autowired
@@ -43,5 +51,14 @@ abstract public class AbstractControllerTest {
                 .addFilter(CHARACTER_ENCODING_FILTER)
                 .apply(springSecurity())
                 .build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        cacheManager.getCache("users").clear();
+        cacheManager.getCache("todaysMenu").clear();
+        if (jpaUtil != null) {
+            jpaUtil.clear2ndLevelHibernateCache();
+        }
     }
 }

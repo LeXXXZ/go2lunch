@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.lexxxz.go2lunch.model.Menu;
@@ -44,6 +45,7 @@ public class MenuService {
         return menuRepository.findByRestaurantIdAndId(restaurantId, menuId).orElseThrow(() -> new NotFoundException("No such menu"));
     }
 
+    @CacheEvict(value = "todaysMenu", allEntries = true)
     @Transactional
     public Menu create(Menu menu, int restaurantId) {
         assertNotNullEntity(menu);
@@ -61,6 +63,7 @@ public class MenuService {
         else throw new IllegalRequestDataException("Menu already exists");
     }
 
+    @CacheEvict(value = "todaysMenu", allEntries = true)
     @Transactional
     public void update(Menu menu, int restaurantId, int id) {
         assertNotNullEntity(menu);

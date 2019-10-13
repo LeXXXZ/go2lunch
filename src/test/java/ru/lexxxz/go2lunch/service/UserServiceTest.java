@@ -12,17 +12,36 @@ import static ru.lexxxz.go2lunch.UserTestData.USER_ID;
 import java.util.Collections;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.lexxxz.go2lunch.model.Role;
 import ru.lexxxz.go2lunch.model.User;
+import ru.lexxxz.go2lunch.repository.JpaUtil;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
 class UserServiceTest extends AbstractServiceTest{
 
     @Autowired
     protected UserService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    private JpaUtil jpaUtil;
+
+    @Autowired(required = false)
+    private void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
+    }
+
+    @BeforeEach
+    void setUp() throws Exception {
+        cacheManager.getCache("users").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
+    }
 
     @Test
     void create() throws Exception {

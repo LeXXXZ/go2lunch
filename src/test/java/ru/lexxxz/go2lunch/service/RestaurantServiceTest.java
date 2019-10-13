@@ -11,10 +11,13 @@ import static ru.lexxxz.go2lunch.util.RestaurantUtil.asTo;
 
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.lexxxz.go2lunch.model.Restaurant;
+import ru.lexxxz.go2lunch.repository.JpaUtil;
 import ru.lexxxz.go2lunch.to.RestaurantTo;
 import ru.lexxxz.go2lunch.util.exception.NotFoundException;
 
@@ -22,6 +25,23 @@ class RestaurantServiceTest extends AbstractServiceTest{
 
     @Autowired
     protected RestaurantService restaurantService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    private JpaUtil jpaUtil;
+
+    @Autowired(required = false)
+    private void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
+    }
+
+    @BeforeEach
+    void setUp() throws Exception {
+        cacheManager.getCache("todaysMenu").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
+    }
+
 
     @Test
     void getAllSorted() {

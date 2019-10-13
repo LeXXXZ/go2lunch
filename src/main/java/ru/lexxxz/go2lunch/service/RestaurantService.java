@@ -8,6 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ public class RestaurantService {
         return checkNotFoundWithId(restaurantRepository.findById(id).orElse(null), id);
     }
 
+    @CacheEvict(value = "todaysMenu", allEntries = true)
     @Transactional
     public void delete(int id) throws NotFoundException {
         log.info("Delete rest with Id: {}", id);
@@ -54,6 +57,7 @@ public class RestaurantService {
 
     }
 
+    @CacheEvict(value = "todaysMenu", allEntries = true)
     @Transactional
     public void update(RestaurantTo restaurantTo) {
         assertNotNullEntity(restaurantTo);
@@ -62,6 +66,7 @@ public class RestaurantService {
         checkNotFoundWithId(restaurantRepository.save(RestaurantUtil.updateFromTo(restaurant, restaurantTo)), restaurantTo.getId());
     }
 
+    @CacheEvict(value = "todaysMenu", allEntries = true)
     @Transactional
     public Restaurant create(RestaurantTo restaurantTo) {
         assertNotNullEntity(restaurantTo);
@@ -69,6 +74,7 @@ public class RestaurantService {
         return restaurantRepository.save(RestaurantUtil.createNewFromTo(restaurantTo));
     }
 
+    @Cacheable("todaysMenu")
     public List<RestaurantTo> getRestsWithTodayMenu(){
         LocalDate today = LocalDate.now();
         List<RestaurantTo> todayRestaurants = restaurantRepository.getAllWithTodayMenu(today);
