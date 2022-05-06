@@ -24,7 +24,7 @@
         <hsqldb.version>2.5.0</hsqldb.version>
         <!--Web-->
         <tomcat.version>9.0.22</tomcat.version>
-        <jackson-json.version>2.10.0</jackson-json.version>
+        <jackson-json.version>2.12.6.1</jackson-json.version>
 
         <!-- Logging -->
         <logback.version>1.2.3</logback.version>
