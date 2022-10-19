@@ -21,7 +21,7 @@
         <spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
 
         <!--DB-->
-        <hsqldb.version>2.5.0</hsqldb.version>
+        <hsqldb.version>2.7.1</hsqldb.version>
         <!--Web-->
         <tomcat.version>9.0.22</tomcat.version>
         <jackson-json.version>2.13.4.1</jackson-json.version>
